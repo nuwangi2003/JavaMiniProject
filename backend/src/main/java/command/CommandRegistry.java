@@ -24,7 +24,6 @@ public class CommandRegistry {
 
             UserDAO userDAO = new UserDAO(connection);
             AuthService authService = new AuthService(userDAO);
-
             UserService userService = new UserService(userDAO);
 
             FinalMarksService finalMarksService = new FinalMarksService();
