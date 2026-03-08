@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0" version="29.6.1">
   <diagram id="6F5s_aLjctICRfo-o8Lu" name="Page-1">
-    <mxGraphModel dx="5127" dy="2393" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1000" background="#000000" math="0" shadow="1">
+    <mxGraphModel grid="0" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1900" pageHeight="1000" background="#000000" math="0" shadow="1">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" style="fillColor=#000000;" />
@@ -293,8 +293,11 @@
         <mxCell id="m6jyVrCqDbOyYf0XHUO3-179" parent="sec_dtos" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;fontSize=9;labelBackgroundColor=none;rounded=0;fontColor=#FEFAE0;" value="- courseCode : String" vertex="1">
           <mxGeometry height="17" width="168" x="33" y="198" as="geometry" />
         </mxCell>
+        <mxCell id="m6jyVrCqDbOyYf0XHUO3-171" parent="sec_dtos" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;fontSize=9;labelBackgroundColor=none;rounded=0;fontColor=#FEFAE0;" value="- regNo : String" vertex="1">
+          <mxGeometry height="17" width="158" x="30" y="86" as="geometry" />
+        </mxCell>
         <mxCell id="sec_models" parent="1" style="swimlane;startSize=22;fontStyle=1;fontSize=11;labelBackgroundColor=none;rounded=0;fillColor=#BC6C25;strokeColor=#DDA15E;fontColor=#FEFAE0;" value="Models" vertex="1">
-          <mxGeometry height="783" width="1100" x="448" y="30" as="geometry">
+          <mxGeometry height="783" width="1100" x="443" y="30" as="geometry">
             <mxRectangle height="25" width="70" x="448" y="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -325,7 +328,10 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="TechOfficer" parent="sec_models" style="swimlane;startSize=22;fontStyle=1;fontSize=10;labelBackgroundColor=none;rounded=0;fillColor=#BC6C25;strokeColor=#DDA15E;fontColor=#FEFAE0;" value="TechOfficer" vertex="1">
-          <mxGeometry height="35" width="122" x="16" y="665" as="geometry" />
+          <mxGeometry height="44" width="162.75" x="16" y="665" as="geometry" />
+        </mxCell>
+        <mxCell id="jUCJKtcWWxVtP3OvNdlH-1" parent="TechOfficer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;fontSize=9;labelBackgroundColor=none;rounded=0;fontColor=#FEFAE0;" value="- departmentID : String" vertex="1">
+          <mxGeometry height="17" width="168" x="-5.25" y="24" as="geometry" />
         </mxCell>
         <mxCell id="Course" parent="sec_models" style="swimlane;startSize=22;fontStyle=1;fontSize=10;labelBackgroundColor=none;rounded=0;fillColor=#BC6C25;strokeColor=#DDA15E;fontColor=#FEFAE0;" value="Course" vertex="1">
           <mxGeometry height="120" width="168" x="342.5" y="251" as="geometry" />
@@ -419,7 +425,7 @@
           <mxGeometry height="180" width="170" x="238" y="591" as="geometry" />
         </mxCell>
         <mxCell id="u9" parent="User" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;fontSize=9;labelBackgroundColor=none;rounded=0;fontColor=#FEFAE0;" value="- createdAt : DateTime" vertex="1">
-          <mxGeometry height="17" width="168" x="2" y="157" as="geometry" />
+          <mxGeometry height="17" width="168" x="-2" y="156" as="geometry" />
         </mxCell>
         <mxCell id="StudentMarks" parent="sec_models" style="swimlane;startSize=22;fontStyle=1;fontSize=10;labelBackgroundColor=none;rounded=0;fillColor=#BC6C25;strokeColor=#DDA15E;fontColor=#FEFAE0;" value="StudentMarks" vertex="1">
           <mxGeometry height="55" width="154" x="16" y="70" as="geometry">
@@ -448,18 +454,15 @@
           <mxGeometry height="17" width="155" x="37" y="198" as="geometry" />
         </mxCell>
         <mxCell id="LecturerCourse" parent="sec_models" style="swimlane;startSize=22;fontStyle=1;fontSize=10;labelBackgroundColor=none;rounded=0;fillColor=#BC6C25;strokeColor=#DDA15E;fontColor=#FEFAE0;" value="LecturerCourse" vertex="1">
-          <mxGeometry height="35" width="135" x="17.75" y="275" as="geometry" />
-        </mxCell>
-        <mxCell id="ai8CkkHUpvPvSAmDMsnw-170" edge="1" parent="LecturerCourse" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;labelBackgroundColor=none;fontColor=default;rounded=0;strokeColor=#DDA15E;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="Lecturer">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="135" y="34" />
-              <mxPoint x="66" y="34" />
-              <mxPoint x="66" y="108" />
-            </Array>
-            <mxPoint x="135" y="18" as="sourcePoint" />
-            <mxPoint x="66" y="62" as="targetPoint" />
+          <mxGeometry height="49" width="180.75" x="17.75" y="273" as="geometry">
+            <mxRectangle height="24" width="104" x="17.75" y="275" as="alternateBounds" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="jUCJKtcWWxVtP3OvNdlH-2" parent="LecturerCourse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;fontSize=9;labelBackgroundColor=none;rounded=0;fontColor=#FEFAE0;" value="- lectureID : String" vertex="1">
+          <mxGeometry height="17" width="168" x="12.75" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="jUCJKtcWWxVtP3OvNdlH-3" parent="LecturerCourse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;fontSize=9;labelBackgroundColor=none;rounded=0;fontColor=#FEFAE0;" value="- courseID : String" vertex="1">
+          <mxGeometry height="17" width="168" x="12.75" y="32" as="geometry" />
         </mxCell>
         <mxCell id="e_lc_course" edge="1" parent="sec_models" source="LecturerCourse" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;labelBackgroundColor=none;fontColor=default;rounded=0;strokeColor=#DDA15E;" target="Course">
           <mxGeometry relative="1" as="geometry">
@@ -698,6 +701,19 @@
         <mxCell id="KAhkIKxIT3Pur1-pU7KQ-22" edge="1" parent="sec_models" source="co4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0;entryDx=0;entryDy=0;" target="co4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="ai8CkkHUpvPvSAmDMsnw-170" edge="1" parent="sec_models" source="jUCJKtcWWxVtP3OvNdlH-3" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;labelBackgroundColor=none;fontColor=default;rounded=0;strokeColor=#DDA15E;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.718;exitY=0.814;exitDx=0;exitDy=0;exitPerimeter=0;" target="Lecturer">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="152.75" y="319" />
+              <mxPoint x="152.75" y="332" />
+              <mxPoint x="83.75" y="332" />
+              <mxPoint x="83.75" y="381" />
+              <mxPoint x="81.75" y="381" />
+            </Array>
+            <mxPoint x="153" y="327" as="sourcePoint" />
+            <mxPoint x="83.75" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="SemesterResult" parent="1" style="swimlane;startSize=22;fontStyle=1;fontSize=10;labelBackgroundColor=none;rounded=0;fillColor=#BC6C25;strokeColor=#DDA15E;fontColor=#FEFAE0;" value="SemesterResult" vertex="1">
           <mxGeometry height="122" width="162" x="1130" y="558" as="geometry" />
         </mxCell>
@@ -931,11 +947,8 @@
             <mxPoint x="2063" y="641" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m6jyVrCqDbOyYf0XHUO3-171" parent="1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;fontSize=9;labelBackgroundColor=none;rounded=0;fontColor=#FEFAE0;" value="- regNo : String" vertex="1">
-          <mxGeometry height="17" width="158" x="2087" y="551" as="geometry" />
-        </mxCell>
         <mxCell id="m6jyVrCqDbOyYf0XHUO3-172" parent="1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;fontSize=9;labelBackgroundColor=none;rounded=0;fontColor=#FEFAE0;" value="- batch : String" vertex="1">
-          <mxGeometry height="17" width="158" x="2096" y="534" as="geometry" />
+          <mxGeometry height="17" width="158" x="2061" y="538" as="geometry" />
         </mxCell>
         <mxCell id="m6jyVrCqDbOyYf0XHUO3-177" parent="1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;fontSize=9;labelBackgroundColor=none;rounded=0;fontColor=#FEFAE0;" value="- courseCode : String" vertex="1">
           <mxGeometry height="17" width="168" x="2212" y="663" as="geometry" />
