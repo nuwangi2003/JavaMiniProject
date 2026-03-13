@@ -1,12 +1,12 @@
-# Maven
+# Maven build folder
 target/
 
-# IntelliJ
+# IntelliJ IDEA
 .idea/
 *.iml
 
+# Compiled Java files
+*.class
+
 # Logs
 *.log
-
-# OS files
-.DS_Store
