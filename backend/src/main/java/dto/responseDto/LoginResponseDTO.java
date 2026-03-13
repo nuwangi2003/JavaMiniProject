@@ -29,7 +29,7 @@ public class LoginResponseDTO {
         return message;
     }
 
-    public String getRoll() {
+    public String getRole() {
         return role;
     }
 

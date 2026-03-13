@@ -8,7 +8,8 @@ module com.example.frontend {
     requires net.synedra.validatorfx;
     requires com.fasterxml.jackson.databind;
 
-
     opens com.example.frontend to javafx.fxml;
+    opens com.example.frontend.controller to javafx.fxml;
+
     exports com.example.frontend;
 }

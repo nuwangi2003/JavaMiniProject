@@ -5,7 +5,7 @@ USE lms_db;
 CREATE TABLE IF NOT EXISTS department (
     department_id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
-    );
+);
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS students (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (department_id) REFERENCES department(department_id)
     );
+
 
 -- Tech Officers
 CREATE TABLE IF NOT EXISTS tech_officers (
