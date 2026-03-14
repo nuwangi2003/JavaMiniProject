@@ -22,43 +22,43 @@ public class CreateUserController implements Initializable {
     private final UserService userService =
             new UserService(ServerClient.getInstance());
 
-    // ── Nav / labels
+    // Nav / labels
     @FXML private Label adminNameLabel;
     @FXML private Label statusBarTime;
 
-    // ── Core fields
+    // Core fields
     @FXML private TextField usernameField;
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private TextField contactField;
     @FXML private TextField roleField;
 
-    // ── Role toggle buttons
+    // Role toggle buttons
     @FXML private ToggleButton roleStudent;
     @FXML private ToggleButton roleLecturer;
     @FXML private ToggleButton roleDean;
     @FXML private ToggleButton roleTechOfficer;
     @FXML private ToggleButton roleAdmin;
 
-    // ── Extra field panes
+    // Extra field panes
     @FXML private VBox studentFields;
     @FXML private VBox lecturerFields;
     @FXML private VBox techOfficerFields;
 
-    // ── Student extras
+    // Student extras
     @FXML private TextField regNoField;
     @FXML private TextField batchField;
     @FXML private ComboBox<String> academicLevelBox;
     @FXML private ComboBox<String> departmentBox;
 
-    // ── Lecturer extras
+    // Lecturer extras
     @FXML private TextField specializationField;
     @FXML private TextField designationField;
 
-    // ── Tech Officer extras
+    // Tech Officer extras
     @FXML private ComboBox<String> techDepartmentBox;
 
-    // ── Feedback
+    // Feedback
     @FXML private Label statusLabel;
 
     private static final String ACTIVE_STYLE =
@@ -100,7 +100,7 @@ public class CreateUserController implements Initializable {
                 .format(java.time.format.DateTimeFormatter.ofPattern("dd MMMM yyyy")));
     }
 
-    // ───────────────── Role Toggle ─────────────────
+    //Role Toggle
 
     private void handleRoleToggle(ToggleButton selected) {
 
@@ -275,7 +275,7 @@ public class CreateUserController implements Initializable {
         statusLabel.setManaged(false);
     }
 
-    // ───────────────── Back Button ─────────────────
+    //Back Button
 
     @FXML
     private void goBack() throws IOException {
@@ -283,10 +283,8 @@ public class CreateUserController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminDashboard.fxml"));
         Parent root = loader.load();
 
-        // Get current stage
         Stage stage = (Stage) usernameField.getScene().getWindow();
 
-        // Set new scene
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
