@@ -1,5 +1,8 @@
 package com.example.frontend.controller;
 
+import com.example.frontend.service.AuthService;
+import com.example.frontend.session.SessionManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +15,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -163,12 +167,47 @@ public class StudentDashboardController implements Initializable {
     @FXML private void openNotices()    { loadView("NoticesView.fxml"); }
     @FXML private void openEligibility(){ loadView("StudentEligibility.fxml"); }
     @FXML private void openProfile()    { loadView("StudentProfile.fxml"); }
-    @FXML private void logout()         { loadView("Login.fxml"); }
+    @FXML
+    void logout(ActionEvent event) {
+        try {
+            // Use the same client instance from LoginController
+            AuthService authService = new AuthService(LoginController.client); // make client static in LoginController
+
+            boolean success = authService.logout(SessionManager.getToken());
+
+            if (success) {
+                System.out.println("Logout successful!");
+
+                // Clear session locally
+                SessionManager.clear();
+
+                // Close dashboard window
+                Stage dashboardStage = (Stage) studentNameLabel.getScene().getWindow();
+                dashboardStage.close();
+
+                // Re-open login window
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
+                Parent root = loader.load();
+
+                Stage loginStage = new Stage();
+                loginStage.initStyle(StageStyle.UNDECORATED);
+                loginStage.setScene(new Scene(root));
+                loginStage.show();
+
+            } else {
+                System.out.println("Logout failed");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void loadView(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/example/frontend/view/" + fxmlFile));
+                    getClass().getResource("/view/" + fxmlFile));
             Parent root = loader.load();
             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
             stage.setScene(new Scene(root));

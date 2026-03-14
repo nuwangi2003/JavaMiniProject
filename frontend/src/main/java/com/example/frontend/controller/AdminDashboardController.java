@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.stage.StageStyle;
@@ -115,7 +116,7 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void openAddUser() {
-        loadView("AddUser.fxml");
+        loadView("createUser.fxml");
     }
 
     @FXML
@@ -180,10 +181,11 @@ public class AdminDashboardController implements Initializable {
     private void loadView(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/example/frontend/view/" + fxmlFile));
+                    getClass().getResource("/view/" + fxmlFile));
             Parent root = loader.load();
             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
             stage.setScene(new Scene(root));
+            stage.centerOnScreen();
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

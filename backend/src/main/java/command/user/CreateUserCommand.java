@@ -21,34 +21,26 @@ public class CreateUserCommand implements Command {
     @Override
     public void execute(Object data, ClientContext context) {
         try {
-            // ===== Token Validation =====
             String token = context.getToken();
+            System.out.println("token : "+ token);
             if (token == null || !authService.isTokenValid(token)) {
-                context.getOutput().println("{\"success\":false,\"message\":\"Unauthorized: invalid or expired token\"}");
+                context.getOutput().println("{\"success\":false,\"message\":\"Unauthorized\"}");
                 return;
             }
 
-            // Convert JSON to DTO
-            UserRequestDTO request = mapper.convertValue(data, UserRequestDTO.class);
-            System.out.println("DTO role: " + request.getRole());
+            UserRequestDTO dto = mapper.convertValue(data, UserRequestDTO.class);
 
-            boolean success = userService.createUser(request);
+            boolean success = userService.createUser(dto);
 
             if (success) {
-                context.getOutput().println(
-                        "{\"success\":true,\"message\":\"User created successfully\"}"
-                );
+                context.getOutput().println("{\"success\":true,\"message\":\"User created successfully\"}");
             } else {
-                context.getOutput().println(
-                        "{\"success\":false,\"message\":\"User creation failed\"}"
-                );
+                context.getOutput().println("{\"success\":false,\"message\":\"User creation failed\"}");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            context.getOutput().println(
-                    "{\"success\":false,\"message\":\"Server error\"}"
-            );
+            context.getOutput().println("{\"success\":false,\"message\":\"Server error\"}");
         }
     }
 }

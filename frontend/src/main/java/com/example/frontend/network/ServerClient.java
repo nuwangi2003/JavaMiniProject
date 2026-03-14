@@ -5,9 +5,14 @@ import java.net.Socket;
 
 public class ServerClient {
 
+    private static ServerClient instance;   // Singleton instance
+
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
+
+    // private constructor (important for singleton)
+    private ServerClient() {}
 
     public void connect() throws Exception {
 
@@ -25,7 +30,16 @@ public class ServerClient {
     public String sendRequest(String json) throws Exception {
 
         out.println(json);
-
         return in.readLine();
+    }
+
+    // Singleton access method
+    public static synchronized ServerClient getInstance() {
+
+        if (instance == null) {
+            instance = new ServerClient();
+        }
+
+        return instance;
     }
 }

@@ -13,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
-    static final ServerClient client = new ServerClient();
+    static final ServerClient client = ServerClient.getInstance();
     public static String username = "";
     public static String userId= "";
     public static String reNo = "";
@@ -64,14 +64,10 @@ public class LoginController {
                 Student student = studentService.getStudentByUserId(LoginController.userId);
                 if (student != null) {
                     reNo = student.getRegNo();
-                } else {
-                    reNo = "";
-                    System.out.println("No student found for user_id: " + LoginController.userId);
                 }
 
                 // Load different pages based on role
                 switch(user.getRole()) {
-
                     case "Student":
                         loadDashboard("/view/studentDashboard.fxml",username);
                         break;
