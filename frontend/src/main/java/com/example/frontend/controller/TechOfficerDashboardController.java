@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -110,7 +111,7 @@ public class TechOfficerDashboardController implements Initializable {
 
     // ─── Navigation ──────────────────────────────────────────────────────────
 
-    @FXML private void openAttendance()    { loadView("AttendanceManagement.fxml"); }
+    @FXML private void openAttendance()    { loadView("ViewAttendance.fxml"); }
     @FXML private void openMarkAttendance(){ loadView("MarkAttendance.fxml"); }
     @FXML private void openMedical()       { loadView("MedicalManagement.fxml"); }
     @FXML private void openAddMedical()    { loadView("AddMedical.fxml"); }
@@ -155,8 +156,12 @@ public class TechOfficerDashboardController implements Initializable {
 
     private void loadView(String fxmlFile) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/view/" + fxmlFile));
+            URL resource = getClass().getResource("/view/" + fxmlFile);
+            if (resource == null) {
+                showNotImplementedAlert(fxmlFile);
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(resource);
             Parent root = loader.load();
             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -164,5 +169,13 @@ public class TechOfficerDashboardController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showNotImplementedAlert(String fxmlFile) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("View Not Available");
+        alert.setHeaderText("This module is not created yet");
+        alert.setContentText("Missing file: /view/" + fxmlFile);
+        alert.showAndWait();
     }
 }
