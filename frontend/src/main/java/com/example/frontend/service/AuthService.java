@@ -31,7 +31,7 @@ public class AuthService {
 
             String role = node.has("role") ? node.get("role").asText() : "";
             String token = node.has("token") ? node.get("token").asText() : "";
-            String userId = node.has("user_id") ? node.get("user_id").asText() : "";
+            String userId = node.has("userId") ? node.get("userId").asText() : "";
 
 
             User user = new User(userId, username, "", role);
@@ -40,5 +40,24 @@ public class AuthService {
         }
 
         return null;
+    }
+    public boolean logout(String token) {
+        try {
+            if (token == null || token.isEmpty()) return false;
+
+            // Include token in logout JSON
+            String logoutJson = String.format(
+                    "{\"command\":\"LOGOUT\",\"data\":{},\"token\":\"%s\"}", token
+            );
+
+            String response = client.sendRequest(logoutJson);
+            JsonNode node = mapper.readTree(response);
+
+            return node.has("success") && node.get("success").asBoolean();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

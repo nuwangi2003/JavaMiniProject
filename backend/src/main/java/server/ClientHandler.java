@@ -1,10 +1,10 @@
 package server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import command.ClientContext;
-import command.Command;
-import command.CommandRegistry;
-import dto.requestDto.RequestDTO;
+import command.repository.ClientContext;
+import command.repository.Command;
+import command.repository.CommandRegistry;
+import dto.requestDto.login.RequestDTO;
 import utility.JwtUtil;
 
 import java.io.BufferedReader;
@@ -52,6 +52,7 @@ public class ClientHandler implements Runnable {
 
                         String username = jwtUtil.getUsernameFromToken(token);
                         String role = jwtUtil.getRoleFromToken(token);
+                        clientContext.setToken(token);
                         clientContext.setUsername(username);
                         clientContext.setRole(role);
                     }
