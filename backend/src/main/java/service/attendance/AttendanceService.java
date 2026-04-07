@@ -3,6 +3,8 @@ package service.attendance;
 import dao.attendance.AttendanceDAO;
 import model.Attendance;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +84,76 @@ public class AttendanceService {
             return List.of();
         }
         return attendanceDAO.getBatchAttendanceSummary(batch.trim(), normalizeViewType(viewType));
+    }
+
+    private static final double ELIGIBILITY_THRESHOLD = 80.0;
+
+    public Map<String, Object> checkAttendanceEligibility(String studentId, String viewType) {
+        if (studentId == null || studentId.isBlank()) {
+            return null;
+        }
+        String vt = normalizeViewType(viewType);
+        Map<String, Object> summary = attendanceDAO.getStudentAttendanceSummary(studentId.trim(), vt);
+        if (summary == null) {
+            Map<String, Object> empty = new HashMap<>();
+            empty.put("studentId", studentId.trim());
+            empty.put("viewType", vt);
+            empty.put("totalSessions", 0);
+            empty.put("attendancePercentage", 0.0);
+            empty.put("eligible", false);
+            empty.put("thresholdPercent", ELIGIBILITY_THRESHOLD);
+            empty.put("eligibilityCategory", "NoData");
+            empty.put("scenarioLabel", "No attendance records");
+            empty.put("hasMedical", attendanceDAO.hasAttendanceMedicalRecord(studentId.trim()));
+            return empty;
+        }
+        return enrichEligibility(summary, attendanceDAO.hasAttendanceMedicalRecord(studentId.trim()));
+    }
+
+    public List<Map<String, Object>> getBatchAttendanceEligibilityReport(String batch, String viewType) {
+        if (batch == null || batch.isBlank()) {
+            return List.of();
+        }
+        String vt = normalizeViewType(viewType);
+        List<Map<String, Object>> raw = attendanceDAO.getBatchAttendanceEligibilityReport(batch.trim(), vt);
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map<String, Object> row : raw) {
+            int medicalCount = ((Number) row.getOrDefault("medicalCount", 0)).intValue();
+            boolean hasMedical = medicalCount > 0;
+            row.remove("medicalCount");
+            result.add(enrichEligibility(row, hasMedical));
+        }
+        return result;
+    }
+
+    private Map<String, Object> enrichEligibility(Map<String, Object> row, boolean hasMedical) {
+        double pct = ((Number) row.get("attendancePercentage")).doubleValue();
+        String category = categorizePercentage(pct);
+        boolean eligible = pct + 1e-9 >= ELIGIBILITY_THRESHOLD;
+
+        String baseLabel = switch (category) {
+            case "Above80" -> "Above 80%";
+            case "Exactly80" -> "Exactly 80%";
+            default -> "Below 80%";
+        };
+        String scenarioLabel = hasMedical ? baseLabel + " + Medical" : baseLabel;
+
+        row.put("eligible", eligible);
+        row.put("thresholdPercent", ELIGIBILITY_THRESHOLD);
+        row.put("eligibilityCategory", category);
+        row.put("hasMedical", hasMedical);
+        row.put("scenarioLabel", scenarioLabel);
+        return row;
+    }
+
+    private String categorizePercentage(double pct) {
+        if (pct > 80.0 + 1e-6) {
+            return "Above80";
+        }
+        if (pct + 1e-6 >= 80.0) {
+            return "Exactly80";
+        }
+        return "Below80";
     }
 
     private boolean isValidStatus(String status) {
