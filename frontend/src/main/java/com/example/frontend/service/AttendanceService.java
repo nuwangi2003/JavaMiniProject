@@ -212,4 +212,28 @@ public class AttendanceService {
             return null;
         }
     }
+
+    public JsonNode checkAttendanceEligibility(String studentId, String viewType) {
+        try {
+            Map<String, Object> data = new HashMap<>();
+            data.put("student_id", studentId);
+            data.put("view_type", viewType);
+            return send("CheckAttendanceEligibility", data);
+        } catch (Exception e) {
+            lastMessage = "Failed to check attendance eligibility: " + (e.getMessage() == null ? "error" : e.getMessage());
+            return null;
+        }
+    }
+
+    public JsonNode getBatchAttendanceEligibilityReport(String batch, String viewType) {
+        try {
+            Map<String, Object> data = new HashMap<>();
+            data.put("batch", batch);
+            data.put("view_type", viewType);
+            return send("GetBatchAttendanceEligibilityReport", data);
+        } catch (Exception e) {
+            lastMessage = "Failed to load batch eligibility report: " + (e.getMessage() == null ? "error" : e.getMessage());
+            return null;
+        }
+    }
 }
