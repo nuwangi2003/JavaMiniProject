@@ -19,6 +19,7 @@ import command.medical.GetBatchMedicalRecordsCommand;
 import command.medical.GetStudentMedicalRecordsCommand;
 import command.medical.RejectMedicalCommand;
 import command.medical.UpdateMedicalCommand;
+import command.notice.AddNoticeCommand;
 import command.student.GetStudentByUserIdCommand;
 import command.attendance.UpdateAttendanceCommand;
 import command.user.CreateUserCommand;
@@ -26,11 +27,13 @@ import command.user.GetAllUsersCommand;
 import command.user.GetUserByIdCommand;
 import dao.attendance.AttendanceDAO;
 import dao.medical.MedicalDAO;
+import dao.notice.NoticeDAO;
 import dao.student.StudentDAO;
 import dao.user.UserDAO;
 import service.attendance.AttendanceService;
 import service.login.AuthService;
 import service.medical.MedicalService;
+import service.notice.AddNoticeService;
 import service.student.StudentService;
 import service.user.UserService;
 import utility.DataSource;
@@ -47,7 +50,7 @@ public class CommandRegistry {
         try {
             Connection connection = DataSource.getInstance().getConnection();
 
-            UserDAO userDAO = new UserDAO(connection);
+            UserDAO userDAO = new UserDAO();
             AuthService authService = new AuthService(userDAO);
 
             commands.put("PING", (args, context) ->
@@ -88,7 +91,7 @@ public class CommandRegistry {
             commands.put("GetBatchAttendanceEligibilityReport", new GetBatchAttendanceEligibilityReportCommand(attendanceService));
 
             // medical related
-            MedicalDAO medicalDAO = new MedicalDAO(connection);
+            MedicalDAO medicalDAO = new MedicalDAO();
             MedicalService medicalService = new MedicalService(medicalDAO);
             commands.put("AddMedical", new AddMedicalCommand(medicalService));
             commands.put("UpdateMedical", new UpdateMedicalCommand(medicalService));
@@ -96,6 +99,13 @@ public class CommandRegistry {
             commands.put("RejectMedical", new RejectMedicalCommand(medicalService));
             commands.put("GetStudentMedicalRecords", new GetStudentMedicalRecordsCommand(medicalService));
             commands.put("GetBatchMedicalRecords", new GetBatchMedicalRecordsCommand(medicalService));
+
+
+
+            // notice related
+            NoticeDAO noticeDAO = new NoticeDAO();
+            AddNoticeService addNoticeService = new AddNoticeService(noticeDAO);
+            AddNoticeCommand addNoticeCommand = new AddNoticeCommand(addNoticeService,authService);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to initialize CommandRegistry: " + e.getMessage());

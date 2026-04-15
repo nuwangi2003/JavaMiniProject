@@ -26,6 +26,13 @@ public class Notice {
         this.created_at = created_at;
     }
 
+    public Notice(String title,String description,String pdf_file_path,Integer created_by){
+        this.title = title;
+        this.description = description;
+        this.pdf_file_path = pdf_file_path;
+        this.created_by = created_by;
+    }
+
     // Getters and Setters
     public int getNotice_id() {
         return notice_id;
