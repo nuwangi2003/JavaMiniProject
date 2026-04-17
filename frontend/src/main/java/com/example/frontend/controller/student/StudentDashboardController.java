@@ -166,6 +166,10 @@ public class StudentDashboardController implements Initializable {
     @FXML private void openNotices()    { loadView("NoticesView.fxml"); }
     @FXML private void openEligibility(){ loadView("StudentEligibility.fxml"); }
     @FXML private void openProfile()    { loadView("StudentProfile.fxml"); }
+
+    @FXML private void openStudentFinalMarks() { loadView("ViewStudentFinalMarks.fxml"); }
+    @FXML private void openStudentGrades() { loadView("StudentGrades.fxml"); }
+
     @FXML
     void logout(ActionEvent event) {
         try {
