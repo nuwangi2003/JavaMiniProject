@@ -116,6 +116,9 @@ public class UserDAO {
             case "Admin" -> {
                 // no extra table
             }
+            case "Dean" -> {
+                // no extra table
+            }
             default -> throw new Exception("Unknown role: " + role);
         }
     }

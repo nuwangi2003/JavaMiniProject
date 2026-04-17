@@ -219,6 +219,7 @@ public class StudentDashboardController implements Initializable {
     @FXML private void openTimetable()  { loadView("StudentTimetable.fxml"); }
     @FXML private void openNotices()    { loadView("NoticesView.fxml"); }
     @FXML private void openEligibility(){ loadView("StudentEligibility.fxml"); }
+    @FXML private void openMyAcademicEndpoints() { loadView("MyAcademicEndpoints.fxml"); }
 
     @FXML
     private void openProfile() {
