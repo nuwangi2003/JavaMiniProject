@@ -20,6 +20,7 @@ import command.medical.GetStudentMedicalRecordsCommand;
 import command.medical.RejectMedicalCommand;
 import command.medical.UpdateMedicalCommand;
 import command.notice.AddNoticeCommand;
+import command.course.AddCourseCommand;
 import command.student.GetStudentByUserIdCommand;
 import command.attendance.UpdateAttendanceCommand;
 import command.student.UpdateStudentProfileCommand;
@@ -54,14 +55,36 @@ import command.eligibility.GetBatchFullEligibilityReportCommand;
 import command.grade.GenerateGradeCommand;
 import command.grade.GetStudentGradesCommand;
 import command.grade.GetBatchGradesCommand;
+import command.gpa.CalculateCGPACommand;
+import command.gpa.CalculateSGPACommand;
+import command.gpa.GetBatchGPAReportCommand;
+import command.gpa.GetStudentGPAReportCommand;
+import command.report.GetBatchFullAcademicReportCommand;
+import command.report.GetStudentFullAcademicReportCommand;
+import command.undergraduate.GetAllNoticesCommand;
+import command.undergraduate.GetMyAttendanceCommand;
+import command.undergraduate.GetMyCoursesCommand;
+import command.undergraduate.GetMyGPACommand;
+import command.undergraduate.GetMyGradesCommand;
+import command.undergraduate.GetMyMarksCommand;
+import command.undergraduate.GetMyMedicalRecordsCommand;
+import command.undergraduate.GetMyTimetableCommand;
 
 import dao.finalMarks.FinalMarksDAO;
 import dao.eligibility.EligibilityDAO;
 import dao.grade.GradeDAO;
+import dao.gpa.GPADAO;
+import dao.course.CourseDAO;
+import dao.report.AcademicReportDAO;
+import dao.report.UndergraduateViewDAO;
 
 import service.finalMarks.FinalMarksService;
 import service.eligibility.EligibilityService;
 import service.grade.GradeService;
+import service.gpa.GPAService;
+import service.course.CourseService;
+import service.report.AcademicReportService;
+import service.report.UndergraduateViewService;
 
 import java.sql.Connection;
 import java.util.HashMap;
@@ -152,12 +175,46 @@ public class CommandRegistry {
             commands.put("GetStudentGrades", new GetStudentGradesCommand(gradeService));
             commands.put("GetBatchGrades", new GetBatchGradesCommand(gradeService));
 
+            // ---------------- GPA ----------------
+            GPADAO gpaDAO = new GPADAO();
+            GPAService gpaService = new GPAService(gpaDAO);
+
+            commands.put("CalculateSGPA", new CalculateSGPACommand(gpaService));
+            commands.put("CalculateCGPA", new CalculateCGPACommand(gpaService));
+            commands.put("GetStudentGPAReport", new GetStudentGPAReportCommand(gpaService));
+            commands.put("GetBatchGPAReport", new GetBatchGPAReportCommand(gpaService));
+
+            // ---------------- Undergraduate View ----------------
+            UndergraduateViewDAO undergraduateViewDAO = new UndergraduateViewDAO();
+            UndergraduateViewService undergraduateViewService = new UndergraduateViewService(undergraduateViewDAO);
+
+            commands.put("GetMyAttendance", new GetMyAttendanceCommand(undergraduateViewService));
+            commands.put("GetMyMedicalRecords", new GetMyMedicalRecordsCommand(undergraduateViewService));
+            commands.put("GetMyCourses", new GetMyCoursesCommand(undergraduateViewService));
+            commands.put("GetMyMarks", new GetMyMarksCommand(undergraduateViewService));
+            commands.put("GetMyGrades", new GetMyGradesCommand(undergraduateViewService));
+            commands.put("GetMyGPA", new GetMyGPACommand(gpaService));
+            commands.put("GetMyTimetable", new GetMyTimetableCommand(undergraduateViewService));
+            commands.put("GetAllNotices", new GetAllNoticesCommand(undergraduateViewService));
+
+            // ---------------- Full Academic Reports ----------------
+            AcademicReportDAO academicReportDAO = new AcademicReportDAO();
+            AcademicReportService academicReportService = new AcademicReportService(academicReportDAO);
+
+            commands.put("GetStudentFullAcademicReport", new GetStudentFullAcademicReportCommand(academicReportService));
+            commands.put("GetBatchFullAcademicReport", new GetBatchFullAcademicReportCommand(academicReportService));
+
 
 
             // notice related
             NoticeDAO noticeDAO = new NoticeDAO();
             AddNoticeService addNoticeService = new AddNoticeService(noticeDAO);
             commands.put("CREATE_NOTICE",new AddNoticeCommand(addNoticeService,authService));
+
+            // course related
+            CourseDAO courseDAO = new CourseDAO();
+            CourseService courseService = new CourseService(courseDAO);
+            commands.put("ADD_COURSE", new AddCourseCommand(courseService, authService));
 
             //time table related
             TimeTableDAO timeTableDAO = new TimeTableDAO();

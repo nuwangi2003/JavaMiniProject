@@ -112,7 +112,7 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void openUsers() {
-        loadView("UserManagement.fxml");
+        loadView("createUser.fxml");
     }
 
     @FXML
@@ -122,22 +122,22 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void openCourses() {
-        loadView("CourseManagement.fxml");
+        loadView("AddCourse.fxml");
     }
 
     @FXML
     private void openNotices() {
-        loadView("NoticeManagement.fxml");
+        openAddNotices();
     }
 
     @FXML
     private void openTimetables() {
-        loadView("TimetableManagement.fxml");
+        openTimeAddTimeTables();
     }
 
     @FXML
     private void openReports() {
-        loadView("Reports.fxml");
+        loadView("BatchFullEligibility.fxml");
     }
 
     @FXML
