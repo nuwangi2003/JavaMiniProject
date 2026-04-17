@@ -152,6 +152,36 @@
                 <!-- Eligibility Alert Row -->
                 <HBox fx:id="eligibilityAlertBox" spacing="12" alignment="CENTER_LEFT"
                       style="-fx-background-color: #162040; -fx-background-radius: 10; -fx-border-color: #ffc107; -fx-border-radius: 10; -fx-border-width: 1;">
+
+                    <!-- My Academic Info Section -->
+                    <VBox spacing="12"
+                          style="-fx-background-color: #162040; -fx-background-radius: 14; -fx-border-color: #1e3c72; -fx-border-radius: 14;">
+
+                        <padding>
+                            <Insets top="20" bottom="20" left="20" right="20"/>
+                        </padding>
+
+                        <Label text="🎓  My Academic Info"
+                               style="-fx-text-fill: #a0c4ff; -fx-font-size: 15px; -fx-font-weight: bold;"/>
+
+                        <FlowPane hgap="12" vgap="12">
+
+                            <Button text="📝  My Final Marks" onAction="#openStudentFinalMarks"
+                                    prefHeight="42" prefWidth="180"
+                                    style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+
+                            <Button text="📊  My Grades" onAction="#openStudentGrades"
+                                    prefHeight="42" prefWidth="180"
+                                    style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+
+                            <Button text="✅  My Eligibility" onAction="#openEligibility"
+                                    prefHeight="42" prefWidth="180"
+                                    style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+
+                        </FlowPane>
+
+                    </VBox>                    
+
                     <padding><Insets top="14" bottom="14" left="18" right="18"/></padding>
                     <Label text="⚠️" style="-fx-font-size: 18px;"/>
                     <VBox spacing="2">

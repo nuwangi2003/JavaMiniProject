@@ -151,6 +151,20 @@
                                 style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
                         <Button text="📖  Course Materials" onAction="#openCourses" prefHeight="42" prefWidth="180"
                                 style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+
+                        <Button text="📝  Upload Final Marks" onAction="#openUploadFinalMarks" prefHeight="42" prefWidth="180"
+                                style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+                        <Button text="✏️  Update Final Marks" onAction="#openUpdateFinalMarks" prefHeight="42" prefWidth="180"
+                                style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+                        <Button text="📦  Batch Final Marks" onAction="#openBatchFinalMarks" prefHeight="42" prefWidth="180"
+                                style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+                        <Button text="📊  Generate Grades" onAction="#openGenerateGrades" prefHeight="42" prefWidth="180"
+                                style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+                        <Button text="📑  Batch Grades" onAction="#openBatchGrades" prefHeight="42" prefWidth="180"
+                                style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+                        <Button text="✅  Batch Eligibility" onAction="#openBatchEligibility" prefHeight="42" prefWidth="180"
+                                style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            
                     </FlowPane>
                 </VBox>
 

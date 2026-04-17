@@ -115,6 +115,14 @@ public class LecturerDashboardController implements Initializable {
     @FXML private void openProfile()    { loadView("LecturerProfile.fxml"); }
     @FXML private void logout()         { loadView("Login.fxml"); }
 
+    @FXML private void openUploadFinalMarks() { loadView("UploadFinalMarks.fxml"); }
+    @FXML private void openUpdateFinalMarks() { loadView("UpdateFinalMarks.fxml"); }
+    @FXML private void openBatchFinalMarks() { loadView("BatchFinalMarks.fxml"); }
+    @FXML private void openGenerateGrades() { loadView("GenerateGrade.fxml"); }
+    @FXML private void openBatchGrades() { loadView("BatchGrades.fxml"); }
+    @FXML private void openBatchEligibility() { loadView("BatchFullEligibility.fxml"); }
+
+
     private void loadView(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(
