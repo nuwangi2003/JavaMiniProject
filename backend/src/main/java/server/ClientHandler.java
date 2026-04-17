@@ -52,9 +52,11 @@ public class ClientHandler implements Runnable {
 
                         String username = jwtUtil.getUsernameFromToken(token);
                         String role = jwtUtil.getRoleFromToken(token);
+                        String userId = jwtUtil.getUserIdFromToken(token);
                         clientContext.setToken(token);
                         clientContext.setUsername(username);
                         clientContext.setRole(role);
+                        clientContext.setUserId(userId);
                     }
 
                     Command command = CommandRegistry.getCommand(commandName);

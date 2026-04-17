@@ -4,6 +4,7 @@ import model.Lecturer;
 import model.Student;
 import model.TechOfficer;
 import model.User;
+import utility.DataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,26 +14,23 @@ import java.util.List;
 
 public class UserDAO {
 
-    private final Connection connection;
-
-    public UserDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    // Find by username & password (login)
     public User findByUsernameAndPassword(String username, String password) {
         String sql = "SELECT user_id, username, password, role FROM users WHERE username = ? AND password = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DataSource.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
             ps.setString(1, username);
             ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new User(
-                        rs.getString("user_id"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("role")
-                );
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                            rs.getString("user_id"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("role")
+                    );
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,12 +38,14 @@ public class UserDAO {
         return null;
     }
 
-    // Get all users
     public List<User> findAllUsers() {
         String sql = "SELECT * FROM users";
         List<User> users = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
+
+        try (Connection connection = DataSource.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
                 User user = new User(
                         rs.getString("user_id"),
@@ -61,17 +61,17 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return users;
     }
 
-    // Create user (with role-specific tables if needed)
     public User createUser(User user) {
         String sqlUser = "INSERT INTO users " +
                 "(user_id, username, email, password, contact_number, profile_picture, role) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try {
-            connection.setAutoCommit(false); // start transaction
+        try (Connection connection = DataSource.getInstance().getConnection()) {
+            connection.setAutoCommit(false);
 
             try (PreparedStatement ps = connection.prepareStatement(sqlUser)) {
                 ps.setString(1, user.getUserId());
@@ -79,10 +79,13 @@ public class UserDAO {
                 ps.setString(3, user.getEmail() != null ? user.getEmail().trim() : null);
                 ps.setString(4, user.getPassword().trim());
                 ps.setString(5, user.getContactNumber() != null ? user.getContactNumber().trim() : null);
-                if (user.getProfilePicture() != null)
+
+                if (user.getProfilePicture() != null) {
                     ps.setString(6, user.getProfilePicture());
-                else
+                } else {
                     ps.setNull(6, java.sql.Types.VARCHAR);
+                }
+
                 ps.setString(7, user.getRole().trim());
 
                 int rows = ps.executeUpdate();
@@ -92,37 +95,38 @@ public class UserDAO {
                 }
             }
 
-            // Role-specific insert (skip for Admin)
-            insertRoleData(user);
+            insertRoleData(connection, user);
 
             connection.commit();
             return user;
 
         } catch (Exception e) {
             e.printStackTrace();
-            try { connection.rollback(); } catch (Exception ignored) {}
             return null;
-        } finally {
-            try { connection.setAutoCommit(true); } catch (Exception ignored) {}
         }
     }
 
-    private void insertRoleData(User user) throws Exception {
+    private void insertRoleData(Connection connection, User user) throws Exception {
         String role = user.getRole().trim();
+
         switch (role) {
-            case "Student" -> insertStudent((Student) user);
-            case "Lecturer" -> insertLecturer((Lecturer) user);
-            case "Tech_Officer" -> insertTechOfficer((TechOfficer) user);
+            case "Student" -> insertStudent(connection, (Student) user);
+            case "Lecturer" -> insertLecturer(connection, (Lecturer) user);
+            case "Tech_Officer" -> insertTechOfficer(connection, (TechOfficer) user);
             case "Admin" -> {
-                // Admin has no extra table; do nothing
+                // no extra table
+            }
+            case "Dean" -> {
+                // no extra table
             }
             default -> throw new Exception("Unknown role: " + role);
         }
     }
 
-    private void insertStudent(Student student) throws Exception {
+    private void insertStudent(Connection connection, Student student) throws Exception {
         String sql = "INSERT INTO students (user_id, reg_no, batch, academic_level, department_id) " +
                 "VALUES (?, ?, ?, ?, ?)";
+
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, student.getUserId());
             ps.setString(2, student.getRegNo());
@@ -133,9 +137,9 @@ public class UserDAO {
         }
     }
 
-    private void insertLecturer(Lecturer lecturer) throws Exception {
-        String sql = "INSERT INTO lecturers (user_id, specialization, designation) " +
-                "VALUES (?, ?, ?)";
+    private void insertLecturer(Connection connection, Lecturer lecturer) throws Exception {
+        String sql = "INSERT INTO lecturers (user_id, specialization, designation) VALUES (?, ?, ?)";
+
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, lecturer.getUserId());
             ps.setString(2, lecturer.getSpecialization());
@@ -144,8 +148,9 @@ public class UserDAO {
         }
     }
 
-    private void insertTechOfficer(TechOfficer officer) throws Exception {
+    private void insertTechOfficer(Connection connection, TechOfficer officer) throws Exception {
         String sql = "INSERT INTO tech_officers (user_id, department_id) VALUES (?, ?)";
+
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, officer.getUserId());
             ps.setString(2, officer.getDepartmentId());
@@ -153,27 +158,31 @@ public class UserDAO {
         }
     }
 
-    // Get user by ID
     public User getUserById(String userId) {
-        try {
-            String sql = "SELECT * FROM users WHERE user_id = ?";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+
+        try (Connection connection = DataSource.getInstance().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
             stmt.setString(1, userId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new User(
-                        rs.getString("user_id"),
-                        rs.getString("username"),
-                        rs.getString("email"),
-                        rs.getString("password"),
-                        rs.getString("contact_number"),
-                        rs.getString("profile_picture"),
-                        rs.getString("role")
-                );
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                            rs.getString("user_id"),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("contact_number"),
+                            rs.getString("profile_picture"),
+                            rs.getString("role")
+                    );
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

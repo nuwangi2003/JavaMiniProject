@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS course_registration (
     PRIMARY KEY (student_id, course_id, academic_year, semester),
     FOREIGN KEY (student_id) REFERENCES students(user_id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE
-    );
+);
 
 -- Assessment Type
 CREATE TABLE IF NOT EXISTS assessment_type (
@@ -158,12 +158,12 @@ CREATE TABLE IF NOT EXISTS medical (
 CREATE TABLE IF NOT EXISTS notice (
     notice_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
-    content TEXT NOT NULL,
-    created_by VARCHAR(10),
+    description TEXT,
+    pdf_file_path VARCHAR(255),
+    created_by INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (created_by) REFERENCES users(user_id) ON DELETE SET NULL
-    );
-
+);
 -- Course Material
 CREATE TABLE IF NOT EXISTS course_material (
     material_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -177,16 +177,17 @@ CREATE TABLE IF NOT EXISTS course_material (
     );
 
 -- Time Table
-CREATE TABLE IF NOT EXISTS time_table (
+CREATE TABLE IF NOT EXISTS timetable (
     timetable_id INT AUTO_INCREMENT PRIMARY KEY,
-    course_id VARCHAR(10),
-    department_id VARCHAR(10),
-    day ENUM('Monday','Tuesday','Wednesday','Thursday','Friday'),
-    start_time TIME,
-    end_time TIME,
-    location VARCHAR(50),
-    type ENUM('Theory','Practical'),
-    FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE,
+    department_id VARCHAR(10) NOT NULL,
+    academic_level INT NOT NULL CHECK (academic_level BETWEEN 1 AND 4),
+    semester ENUM('1','2') NOT NULL,
+    title VARCHAR(100),
+    pdf_file_path VARCHAR(255) NOT NULL,
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE (department_id, academic_level, semester),
+
     FOREIGN KEY (department_id) REFERENCES department(department_id) ON DELETE CASCADE
 );
 

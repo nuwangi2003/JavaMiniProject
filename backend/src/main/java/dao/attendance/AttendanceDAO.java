@@ -289,4 +289,64 @@ public class AttendanceDAO {
         }
         return rows;
     }
+
+    public boolean hasAttendanceMedicalRecord(String studentId) {
+        String sql = "SELECT 1 FROM medical WHERE student_id = ? AND exam_type = 'Attendance' LIMIT 1";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, studentId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<Map<String, Object>> getBatchAttendanceEligibilityReport(String batch, String viewType) {
+        String sql = "SELECT a.student_id, s.reg_no, u.username, s.batch, " +
+                "COUNT(*) AS totalSessions, " +
+                "SUM(CASE WHEN a.status = 'Present' THEN 1 ELSE 0 END) AS presentCount, " +
+                "SUM(CASE WHEN a.status = 'Absent' THEN 1 ELSE 0 END) AS absentCount, " +
+                "SUM(CASE WHEN a.status = 'Present' THEN a.hours_attended ELSE 0 END) AS totalHoursAttended, " +
+                "(SELECT COUNT(*) FROM medical m WHERE m.student_id = s.user_id AND m.exam_type = 'Attendance') AS medicalCount " +
+                "FROM attendance a " +
+                "INNER JOIN students s ON a.student_id = s.user_id " +
+                "INNER JOIN users u ON s.user_id = u.user_id " +
+                "INNER JOIN session se ON a.session_id = se.session_id " +
+                "WHERE s.batch = ? AND (? = 'Combined' OR se.type = ?) " +
+                "GROUP BY a.student_id, s.reg_no, u.username, s.batch " +
+                "ORDER BY s.reg_no ASC";
+        List<Map<String, Object>> rows = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, batch);
+            stmt.setString(2, viewType);
+            stmt.setString(3, viewType);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int total = rs.getInt("totalSessions");
+                    int present = rs.getInt("presentCount");
+                    double percentage = total == 0 ? 0.0 : (present * 100.0) / total;
+                    int medicalCount = rs.getInt("medicalCount");
+
+                    Map<String, Object> row = new HashMap<>();
+                    row.put("studentId", rs.getString("student_id"));
+                    row.put("regNo", rs.getString("reg_no"));
+                    row.put("studentName", rs.getString("username"));
+                    row.put("batch", rs.getString("batch"));
+                    row.put("viewType", viewType);
+                    row.put("totalSessions", total);
+                    row.put("presentCount", present);
+                    row.put("absentCount", rs.getInt("absentCount"));
+                    row.put("totalHoursAttended", rs.getDouble("totalHoursAttended"));
+                    row.put("attendancePercentage", Math.round(percentage * 100.0) / 100.0);
+                    row.put("medicalCount", medicalCount);
+                    rows.add(row);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rows;
+    }
 }

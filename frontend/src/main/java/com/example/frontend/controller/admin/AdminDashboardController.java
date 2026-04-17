@@ -1,9 +1,10 @@
 package com.example.frontend.controller.admin;
 
-import com.example.frontend.dto.CourseRequestDTO;
+
 import com.example.frontend.network.ServerClient;
 import com.example.frontend.service.AuthService;
-import com.example.frontend.service.CourseService;
+import com.example.frontend.service.NoticeService;
+import com.example.frontend.service.TimeTableService;
 import com.example.frontend.session.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,7 +60,7 @@ public class AdminDashboardController implements Initializable {
 
         // Load recent notices
         loadRecentNotices();
-        testAddCourse();
+
     }
 
 
@@ -107,11 +108,11 @@ public class AdminDashboardController implements Initializable {
         return row;
     }
 
-    // ─── Navigation Handlers ─────────────────────────────────────────────────
+
 
     @FXML
     private void openUsers() {
-        loadView("UserManagement.fxml");
+        loadView("createUser.fxml");
     }
 
     @FXML
@@ -121,22 +122,22 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void openCourses() {
-        loadView("CourseManagement.fxml");
+        loadView("AddCourse.fxml");
     }
 
     @FXML
     private void openNotices() {
-        loadView("NoticeManagement.fxml");
+        openAddNotices();
     }
 
     @FXML
     private void openTimetables() {
-        loadView("TimetableManagement.fxml");
+        openTimeAddTimeTables();
     }
 
     @FXML
     private void openReports() {
-        loadView("Reports.fxml");
+        loadView("BatchFullEligibility.fxml");
     }
 
     @FXML
@@ -145,11 +146,40 @@ public class AdminDashboardController implements Initializable {
     }
 
     @FXML
-    public void openAddNotices(ActionEvent actionEvent) {
+    public void openAddNotices() {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddNotice.fxml"));
+                Parent root = loader.load();
+
+                AddNoticeController controller = loader.getController();
+                controller.setNoticeService(new NoticeService(ServerClient.getInstance()));
+
+                Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
     }
 
     @FXML
     public void openTimeAddTimeTables() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddTimeTable.fxml"));
+            Parent root = loader.load();
+
+            AddTimeTableController controller = loader.getController();
+            controller.setTimeTableService(new TimeTableService(ServerClient.getInstance()));
+
+            Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -203,29 +233,6 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
-    private void testAddCourse() {
-        try {
-            CourseRequestDTO dto = new CourseRequestDTO();
-            dto.setCourseId("C004");
-            dto.setCourseCode("ICT1212");
-            dto.setName("Operating system");
-            dto.setCourseCredit(3);
-            dto.setAcademicLevel(1);
-            dto.setSemester("1");
-            dto.setDepartmentId("ICT");
 
-            CourseService courseService = new CourseService(ServerClient.getInstance());
-            boolean success = courseService.addCourse(dto);
-
-            if (success) {
-                System.out.println("Course added successfully");
-            } else {
-                System.out.println("Course creation failed");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
