@@ -31,6 +31,7 @@ import command.ca.GetBatchCAMarksCommand;
 import command.ca.GetStudentCAMarksCommand;
 import command.ca.UpdateCAMarksCommand;
 import command.ca.UploadCAMarksCommand;
+import command.notice.GetAllNoticeCommand;
 import command.student.GetStudentByUserIdCommand;
 import command.attendance.UpdateAttendanceCommand;
 import command.student.UpdateStudentProfileCommand;
@@ -56,7 +57,7 @@ import service.lecture.LecturerService;
 import service.lecturerCourse.LecturerCourseService;
 import service.login.AuthService;
 import service.medical.MedicalService;
-import service.notice.AddNoticeService;
+import service.notice.NoticeService;
 import service.student.StudentService;
 import service.timetable.TimeTableService;
 import service.user.UserService;
@@ -236,8 +237,9 @@ public class CommandRegistry {
 
             // notice related
             NoticeDAO noticeDAO = new NoticeDAO();
-            AddNoticeService addNoticeService = new AddNoticeService(noticeDAO);
-            commands.put("CREATE_NOTICE",new AddNoticeCommand(addNoticeService,authService));
+            NoticeService noticeService = new NoticeService(noticeDAO);
+            commands.put("CREATE_NOTICE",new AddNoticeCommand(noticeService,authService));
+            commands.put("GET_ALL_NOTICE",new GetAllNoticeCommand(noticeService,authService));
 
             // course related
             CourseDAO courseDAO = new CourseDAO();
