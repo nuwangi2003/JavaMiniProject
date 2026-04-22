@@ -127,7 +127,7 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void openNotices() {
-        loadView("NoticeManagement.fxml");
+        loadView("NoticeDisplay.fxml");
     }
 
     @FXML
