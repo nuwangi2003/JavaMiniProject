@@ -70,7 +70,7 @@ public class UserService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return Collections.emptyList();
         }
     }
 
@@ -89,6 +89,44 @@ public class UserService {
             }
 
             JsonNode data = node.get("data");
+            TechOfficerProfile profile = new TechOfficerProfile();
+            profile.setUserId(data.path("userId").asText(""));
+            profile.setUsername(data.path("username").asText(""));
+            profile.setEmail(data.path("email").asText(""));
+            profile.setContactNumber(data.path("contactNumber").asText(""));
+            profile.setProfilePicture(data.path("profilePicture").asText(""));
+            profile.setRole(data.path("role").asText(""));
+            profile.setDepartmentId(data.path("departmentId").asText(""));
+            return profile;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public TechOfficerProfile getMyTechOfficerProfile() {
+        try {
+            String token = SessionManager.getToken();
+            if (token == null || token.isBlank()) {
+                return null;
+            }
+
+            String requestJson = String.format(
+                    "{\"command\":\"GET_MY_TECH_OFFICER_PROFILE\",\"data\":{},\"token\":\"%s\"}",
+                    token
+            );
+
+            String response = client.sendRequest(requestJson);
+            JsonNode node = mapper.readTree(response);
+
+            if (!node.path("success").asBoolean(false)) {
+                return null;
+            }
+
+            JsonNode data = node.get("data");
+            if (data == null || data.isNull()) {
+                return null;
+            }
+
             TechOfficerProfile profile = new TechOfficerProfile();
             profile.setUserId(data.path("userId").asText(""));
             profile.setUsername(data.path("username").asText(""));

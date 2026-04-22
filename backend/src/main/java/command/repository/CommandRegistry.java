@@ -43,6 +43,7 @@ import command.user.GetUserByIdCommand;
 import dao.attendance.AttendanceDAO;
 import dao.techofficer.TechOfficerDAO;
 import dao.ca.CAMarkDAO;
+import command.techofficer.GetMyTechOfficerProfileCommand;
 
 
 import dao.lecture.LecturerDAO;
@@ -246,6 +247,7 @@ public class CommandRegistry {
             TechOfficerDAO techOfficerDAO = new TechOfficerDAO(connection);
             TechOfficerService techOfficerService = new TechOfficerService(techOfficerDAO);
             commands.put("GET_TECH_OFFICER_PROFILE", new GetTechOfficerProfileCommand(techOfficerService));
+            commands.put("GET_MY_TECH_OFFICER_PROFILE", new GetMyTechOfficerProfileCommand(techOfficerService));
             commands.put("UPDATE_TECH_OFFICER_PROFILE", new UpdateTechOfficerProfileCommand(techOfficerService));
 
             // course related
