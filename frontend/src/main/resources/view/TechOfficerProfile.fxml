@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.frontend.controller.TechOfficerProfileController"
+            prefWidth="1000" prefHeight="650"
+            style="-fx-background-color: #0f1b35;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color: #0a1628; -fx-border-color: #1e3c72; -fx-border-width: 0 0 1 0;">
+            <padding>
+                <Insets top="14" right="24" bottom="14" left="24"/>
+            </padding>
+            <Label text="Technical Officer Profile" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Back to Dashboard" onAction="#backToDashboard"
+                    style="-fx-background-color: #1e3c72; -fx-text-fill: white; -fx-font-size: 12px; -fx-background-radius: 6;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="18" style="-fx-background-color: #0f1b35;">
+            <padding>
+                <Insets top="28" right="30" bottom="28" left="30"/>
+            </padding>
+
+            <Label text="Edit your profile details and save changes." style="-fx-text-fill: #a0b8e0; -fx-font-size: 13px;"/>
+
+            <GridPane hgap="14" vgap="14"
+                      style="-fx-background-color: #162040; -fx-background-radius: 12; -fx-border-color: #1e3c72; -fx-border-radius: 12;">
+                <padding>
+                    <Insets top="22" right="22" bottom="22" left="22"/>
+                </padding>
+
+                <Label text="User ID" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-text-fill: #c5d8f5;"/>
+                <Label fx:id="userIdLabel" text="-" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-text-fill: white;"/>
+
+                <Label text="Role" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-text-fill: #c5d8f5;"/>
+                <Label fx:id="roleLabel" text="Tech_Officer" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-text-fill: white;"/>
+
+                <Label text="Username" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-text-fill: #c5d8f5;"/>
+                <TextField fx:id="usernameField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Email" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-text-fill: #c5d8f5;"/>
+                <TextField fx:id="emailField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="Password (optional)" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-text-fill: #c5d8f5;"/>
+                <PasswordField fx:id="passwordField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                <Label text="Contact Number" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-text-fill: #c5d8f5;"/>
+                <TextField fx:id="contactNumberField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                <Label text="Department ID" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-text-fill: #c5d8f5;"/>
+                <TextField fx:id="departmentIdField" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+                <Label text="Profile Picture URL" GridPane.rowIndex="7" GridPane.columnIndex="0" style="-fx-text-fill: #c5d8f5;"/>
+                <TextField fx:id="profilePictureField" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <HBox spacing="10">
+                <Button text="Refresh" onAction="#refreshProfile"/>
+                <Button text="Clear Password" onAction="#clearForm"/>
+                <Button text="Save Profile" onAction="#saveProfile"
+                        style="-fx-background-color: #1e7e34; -fx-text-fill: white;"/>
+            </HBox>
+
+            <Label fx:id="statusLabel" text="Ready" style="-fx-text-fill: #6a90c8;"/>
+        </VBox>
+    </center>
+</BorderPane>
