@@ -173,7 +173,7 @@ public class TechOfficerDashboardController implements Initializable {
         return row;
     }
 
-    // ─── Navigation ──────────────────────────────────────────────────────────
+    // Navigation
 
     @FXML private void openAttendance()    { loadView("ViewAttendance.fxml"); }
     @FXML
