@@ -301,19 +301,31 @@ public class UserManagementController implements Initializable {
 
     @FXML
     private void openAddUser() {
-        loadView("admin/createUser.fxml");
+       if(!Objects.equals(SessionManager.getRole(), "Lecturer")) loadView("admin/createUser.fxml");
     }
 
     @FXML
     public void goBack() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/admin/AdminDashboard.fxml"));
-            Parent root = loader.load();
+            if(Objects.equals(SessionManager.getRole(), "Lecturer")){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/lecturer/lecturerDashboard.fxml"));
+                Parent root = loader.load();
 
-            Stage stage = (Stage) adminNameLabel.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.centerOnScreen();
-            stage.show();
+                Stage stage = (Stage) adminNameLabel.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.centerOnScreen();
+                stage.show();
+            }
+            else{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/admin/AdminDashboard.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = (Stage) adminNameLabel.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.centerOnScreen();
+                stage.show();
+            }
+
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.frontend.controller.lecturer.StudentCourseMarksController"
+            prefWidth="1250"
+            prefHeight="760"
+            style="-fx-background-color: #f8fbff;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT"
+              style="-fx-background-color: linear-gradient(to right, #5b9fd9, #3f7fc2);
+                     -fx-effect: dropshadow(three-pass-box, rgba(63,127,194,0.28), 16, 0, 0, 4);">
+
+            <HBox alignment="CENTER_LEFT" spacing="12" prefHeight="74">
+                <padding>
+                    <Insets left="26" right="26"/>
+                </padding>
+
+                <StackPane prefWidth="46" prefHeight="46"
+                           style="-fx-background-color: white;
+                                  -fx-background-radius: 23;
+                                  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 8, 0, 0, 2);">
+                    <Label text="🎓" style="-fx-font-size: 18px;"/>
+                </StackPane>
+
+                <VBox spacing="2">
+                    <Label text="FoT Portal"
+                           style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;"/>
+                    <Label text="Student Marks &amp; Eligibility Report"
+                           style="-fx-text-fill: rgba(255,255,255,0.82); -fx-font-size: 11px;"/>
+                </VBox>
+            </HBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <HBox alignment="CENTER" spacing="10">
+                <padding>
+                    <Insets right="24"/>
+                </padding>
+
+                <Label text="📊 Marks Report"
+                       style="-fx-background-color: rgba(255,255,255,0.18);
+                              -fx-text-fill: white;
+                              -fx-font-size: 12px;
+                              -fx-font-weight: bold;
+                              -fx-background-radius: 20;
+                              -fx-padding: 8 16;"/>
+
+                <Button text="← Dashboard"
+                        onAction="#goBack"
+                        style="-fx-background-color: white;
+                               -fx-text-fill: #3f7fc2;
+                               -fx-font-size: 12px;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 20;
+                               -fx-padding: 8 18;
+                               -fx-cursor: hand;"/>
+            </HBox>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="22">
+            <padding>
+                <Insets top="28" right="34" bottom="28" left="34"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="18"
+                  style="-fx-background-color: linear-gradient(to right, #ffffff, #f3f8ff);
+                         -fx-background-radius: 18;
+                         -fx-border-color: #d7e7f8;
+                         -fx-border-radius: 18;
+                         -fx-border-width: 1;
+                         -fx-effect: dropshadow(three-pass-box, rgba(91,159,217,0.14), 16, 0, 0, 5);">
+
+                <padding>
+                    <Insets top="22" right="24" bottom="22" left="24"/>
+                </padding>
+
+                <StackPane prefWidth="58" prefHeight="58"
+                           style="-fx-background-color: linear-gradient(to bottom right, #5b9fd9, #7cb7ea);
+                                  -fx-background-radius: 29;">
+                    <Label text="📋" style="-fx-font-size: 22px;"/>
+                </StackPane>
+
+                <VBox spacing="5">
+                    <Label text="Student Course Marks Report"
+                           style="-fx-text-fill: #1a3a52; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+                    <Label text="View every student course record with attendance, CA, final marks, medical status, and result status."
+                           style="-fx-text-fill: #8fa3b8; -fx-font-size: 13px;"/>
+                </VBox>
+            </HBox>
+
+            <VBox spacing="0"
+                  style="-fx-background-color: white;
+                         -fx-background-radius: 16;
+                         -fx-border-color: #d7e7f8;
+                         -fx-border-radius: 16;
+                         -fx-border-width: 1;
+                         -fx-effect: dropshadow(three-pass-box, rgba(91,159,217,0.12), 14, 0, 0, 5);">
+
+                <HBox alignment="CENTER_LEFT" spacing="12"
+                      style="-fx-background-color: #f5f9ff;
+                             -fx-background-radius: 16 16 0 0;
+                             -fx-border-color: transparent transparent #e8eef5 transparent;
+                             -fx-border-width: 0 0 1 0;">
+                    <padding>
+                        <Insets top="18" right="24" bottom="18" left="24"/>
+                    </padding>
+
+                    <Label text="🔍" style="-fx-font-size: 18px;"/>
+
+                    <VBox spacing="1">
+                        <Label text="Filter Options"
+                               style="-fx-text-fill: #1a3a52; -fx-font-size: 15px; -fx-font-weight: bold;"/>
+                        <Label text="Select level, semester, department, and course before generating course results."
+                               style="-fx-text-fill: #8fa3b8; -fx-font-size: 11px;"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets top="20" right="24" bottom="20" left="24"/>
+                    </padding>
+
+                    <TextField fx:id="searchField"
+                               promptText="Search regNo, name, course, status..."
+                               onKeyReleased="#filterTable"
+                               prefWidth="230"
+                               style="-fx-background-color: white;
+                                      -fx-border-color: #d4e4f7;
+                                      -fx-border-radius: 8;
+                                      -fx-background-radius: 8;
+                                      -fx-padding: 10;"/>
+
+                    <TextField fx:id="academicYearField"
+                               promptText="Year"
+                               prefWidth="90"
+                               style="-fx-background-color: white;
+                                      -fx-border-color: #d4e4f7;
+                                      -fx-border-radius: 8;
+                                      -fx-background-radius: 8;
+                                      -fx-padding: 10;"/>
+
+                    <ComboBox fx:id="levelBox"
+                              onAction="#filterTable"
+                              prefWidth="90"
+                              style="-fx-background-color: white;
+                                     -fx-border-color: #d4e4f7;
+                                     -fx-border-radius: 8;
+                                     -fx-background-radius: 8;"/>
+
+                    <ComboBox fx:id="semesterBox"
+                              onAction="#filterTable"
+                              prefWidth="95"
+                              style="-fx-background-color: white;
+                                     -fx-border-color: #d4e4f7;
+                                     -fx-border-radius: 8;
+                                     -fx-background-radius: 8;"/>
+
+                    <ComboBox fx:id="departmentBox"
+                              onAction="#filterTable"
+                              prefWidth="150"
+                              style="-fx-background-color: white;
+                                     -fx-border-color: #d4e4f7;
+                                     -fx-border-radius: 8;
+                                     -fx-background-radius: 8;"/>
+
+                    <ComboBox fx:id="courseBox"
+                              onAction="#filterTable"
+                              HBox.hgrow="ALWAYS"
+                              style="-fx-background-color: white;
+                                     -fx-border-color: #d4e4f7;
+                                     -fx-border-radius: 8;
+                                     -fx-background-radius: 8;"/>
+
+                    <Button text="Clear"
+                            onAction="#clearFilters"
+                            prefWidth="85"
+                            style="-fx-background-color: #e8eef5;
+                                   -fx-text-fill: #5b9fd9;
+                                   -fx-font-weight: bold;
+                                   -fx-background-radius: 8;
+                                   -fx-border-color: #d4e4f7;
+                                   -fx-border-radius: 8;
+                                   -fx-cursor: hand;"/>
+
+                    <Button text="Refresh"
+                            onAction="#loadData"
+                            prefWidth="95"
+                            style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: bold;
+                                   -fx-background-radius: 8;
+                                   -fx-cursor: hand;"/>
+
+                    <Button text="Generate"
+                            onAction="#generateResults"
+                            prefWidth="115"
+                            style="-fx-background-color: linear-gradient(to right, #22c55e, #16a34a);
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: bold;
+                                   -fx-background-radius: 8;
+                                   -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
+
+            <VBox spacing="0"
+                  VBox.vgrow="ALWAYS"
+                  style="-fx-background-color: white;
+                         -fx-background-radius: 16;
+                         -fx-border-color: #d7e7f8;
+                         -fx-border-radius: 16;
+                         -fx-border-width: 1;
+                         -fx-effect: dropshadow(three-pass-box, rgba(91,159,217,0.12), 14, 0, 0, 5);">
+
+                <HBox alignment="CENTER_LEFT" spacing="12"
+                      style="-fx-background-color: #f5f9ff;
+                             -fx-background-radius: 16 16 0 0;
+                             -fx-border-color: transparent transparent #e8eef5 transparent;
+                             -fx-border-width: 0 0 1 0;">
+                    <padding>
+                        <Insets top="18" right="24" bottom="18" left="24"/>
+                    </padding>
+
+                    <Label text="📑" style="-fx-font-size: 18px;"/>
+
+                    <VBox spacing="1">
+                        <Label text="Student Marks Table"
+                               style="-fx-text-fill: #1a3a52; -fx-font-size: 15px; -fx-font-weight: bold;"/>
+                        <Label fx:id="summaryLabel"
+                               text="No records loaded"
+                               style="-fx-text-fill: #8fa3b8; -fx-font-size: 11px;"/>
+                    </VBox>
+                </HBox>
+
+                <TableView fx:id="marksTable"
+                           VBox.vgrow="ALWAYS"
+                           prefHeight="400"
+                           style="-fx-background-color: white;
+                                  -fx-border-color: transparent;">
+
+                    <columns>
+                        <TableColumn fx:id="regNoColumn" text="Reg No" prefWidth="130"/>
+                        <TableColumn fx:id="nameColumn" text="Name" prefWidth="150"/>
+                        <TableColumn fx:id="departmentColumn" text="Department" prefWidth="130"/>
+                        <TableColumn fx:id="levelColumn" text="Level" prefWidth="70"/>
+                        <TableColumn fx:id="semesterColumn" text="Semester" prefWidth="90"/>
+                        <TableColumn fx:id="courseColumn" text="Course" prefWidth="250"/>
+                        <TableColumn fx:id="attendanceColumn" text="Attendance %" prefWidth="110"/>
+                        <TableColumn fx:id="caColumn" text="CA %" prefWidth="90"/>
+                        <TableColumn fx:id="finalMarksColumn" text="Final Marks" prefWidth="100"/>
+                        <TableColumn fx:id="medicalColumn" text="Medical" prefWidth="130"/>
+                        <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <Label fx:id="statusLabel"
+                   visible="false"
+                   managed="false"
+                   style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
+
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT"
+              spacing="10"
+              style="-fx-background-color: white;
+                     -fx-border-color: #e8eef5;
+                     -fx-border-width: 1 0 0 0;">
+            <padding>
+                <Insets top="8" bottom="8" left="24" right="24"/>
+            </padding>
+
+            <Circle radius="4" style="-fx-fill: #4cba52;"/>
+            <Label text="System Online  •  Faculty of Technology Management System  •  v1.0"
+                   style="-fx-text-fill: #8fa3b8; -fx-font-size: 11px;"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label text="Student Marks Report"
+                   style="-fx-text-fill: #8fa3b8; -fx-font-size: 11px;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

@@ -5,6 +5,9 @@ import command.course.GetAllCoursesCommandFull;
 import command.courseMeterial.AddCourseMaterialCommand;
 import command.courseMeterial.DeleteCourseMaterialCommand;
 import command.courseMeterial.GetCourseMaterialsCommand;
+import command.eligibility.GetCAEligibilityCommand;
+import command.eligibility.GetFinalEligibilityCommand;
+import command.eligibility.GetStudentEligibilityCommand;
 import command.finalMarks.UploadFinalMarksCommand;
 import command.lecturer.GetAllLecturersCommand;
 import command.lecturerCourse.AssignLecturerCourseCommand;
@@ -17,6 +20,10 @@ import command.attendance.GetAttendanceByIdCommand;
 import command.attendance.GetAttendanceSessionsCommand;
 import command.attendance.GetMedicalEligibleCoursesCommand;
 import command.attendance.GetMedicalEligibleStudentsCommand;
+import command.result.GenerateCourseResultCommand;
+import command.result.GenerateGradeGPACommand;
+import command.result.GetStudentCourseMarksCommand;
+import command.result.SaveSemesterResultsCommand;
 import command.session.AddLectureSessionCommand;
 import command.techofficer.GetTechOfficerDashboardStatsCommand;
 import command.techofficer.GetTechOfficerProfileCommand;
@@ -75,12 +82,18 @@ import dao.user.UserDAO;
 import service.attendance.AttendanceService;
 import service.ca.CAMarkService;
 import service.courseMeterial.CourseMaterialService;
+import service.eligibility.CAEligibilityService;
+import service.eligibility.FinalEligibilityService;
+import service.eligibility.StudentEligibilityService;
 import service.finalMarks.FinalMarksService;
 import service.lecture.LecturerService;
 import service.lecturerCourse.LecturerCourseService;
 import service.login.AuthService;
 import service.medical.MedicalService;
 import service.notice.NoticeService;
+import service.result.CourseResultGeneratorService;
+import service.result.GradeGPAService;
+import service.result.StudentCourseMarksService;
 import service.session.SessionService;
 import service.student.StudentService;
 import service.timetable.TimeTableService;
@@ -156,9 +169,20 @@ public class CommandRegistry {
             commands.put("GetBatchAttendanceEligibilityReport", new GetBatchAttendanceEligibilityReportCommand(attendanceService));
             commands.put("GetMedicalEligibleStudents", new GetMedicalEligibleStudentsCommand(attendanceService));
             commands.put("GetMedicalEligibleCourses", new GetMedicalEligibleCoursesCommand(attendanceService));
+            StudentEligibilityService studentEligibilityService = new StudentEligibilityService();
+            commands.put("GET_STUDENT_ELIGIBILITY",
+                    new GetStudentEligibilityCommand(studentEligibilityService, authService));
+
+
+
+
+
 
             // CA marks related
             CAMarkDAO caMarkDAO = new CAMarkDAO(connection);
+            CAEligibilityService caEligibilityService = new CAEligibilityService();
+            FinalEligibilityService finalEligibilityService = new FinalEligibilityService();
+            StudentCourseMarksService studentCourseMarksService = new StudentCourseMarksService();
             CAMarkService caMarkService = new CAMarkService(caMarkDAO);
             commands.put("UploadCAMarks", new UploadCAMarksCommand(caMarkService));
             commands.put("UpdateCAMarks", new UpdateCAMarksCommand(caMarkService));
@@ -166,6 +190,26 @@ public class CommandRegistry {
             commands.put("GetBatchCAMarks", new GetBatchCAMarksCommand(caMarkService));
             commands.put("CheckCAEligibility", new CheckCAEligibilityCommand(caMarkService));
             commands.put("GetBatchCAEligibilityReport", new GetBatchCAEligibilityReportCommand(caMarkService));
+            commands.put("GET_CA_ELIGIBILITY",
+                    new GetCAEligibilityCommand(caEligibilityService, authService));
+
+            commands.put("GET_FINAL_ELIGIBILITY",
+                    new GetFinalEligibilityCommand(finalEligibilityService, authService));
+            commands.put("GET_STUDENT_COURSE_MARKS",
+                    new GetStudentCourseMarksCommand(studentCourseMarksService, authService));
+
+            CourseResultGeneratorService courseResultGeneratorService =
+                    new CourseResultGeneratorService();
+
+            commands.put("GENERATE_COURSE_RESULT",
+                    new GenerateCourseResultCommand(courseResultGeneratorService, authService));
+            GradeGPAService gradeGPAService = new GradeGPAService();
+
+            commands.put("GENERATE_GPA",
+                    new GenerateGradeGPACommand(gradeGPAService, authService));
+
+            commands.put("SAVE_SEMESTER_RESULTS",
+                    new SaveSemesterResultsCommand(gradeGPAService, authService));
 
             // medical related
             MedicalDAO medicalDAO = new MedicalDAO(connection);

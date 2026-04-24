@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom right, #eef6ff, #fdfcff);" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.controller.lecturer.LecturerDashboardController">
+<BorderPane prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom right, #eef6ff, #fdfcff);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.controller.lecturer.LecturerDashboardController">
 
     <top>
         <HBox alignment="CENTER_LEFT" spacing="0" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #3f7fc2);                      -fx-effect: dropshadow(three-pass-box, rgba(63,127,194,0.25), 14, 0, 0, 3);">
@@ -46,11 +46,7 @@
 
                 <Button onAction="#openMarks" style="-fx-background-color: transparent;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-background-radius: 10;                                -fx-padding: 8 18 8 18;                                -fx-cursor: hand;" text="Marks" />
 
-                <Button onAction="#openCA" style="-fx-background-color: transparent;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-background-radius: 10;                                -fx-padding: 8 18 8 18;                                -fx-cursor: hand;" text="CA Management" />
-
                 <Button onAction="#openStudents" style="-fx-background-color: transparent;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-background-radius: 10;                                -fx-padding: 8 18 8 18;                                -fx-cursor: hand;" text="Students" />
-
-                <Button onAction="#openEligibility" style="-fx-background-color: transparent;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-background-radius: 10;                                -fx-padding: 8 18 8 18;                                -fx-cursor: hand;" text="Eligibility" />
 
                 <Button onAction="#openAttendance" style="-fx-background-color: transparent;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-background-radius: 10;                                -fx-padding: 8 18 8 18;                                -fx-cursor: hand;" text="Attendance" />
 
@@ -151,31 +147,17 @@
                     <Separator style="-fx-background-color: #e7eef7;" />
 
                     <FlowPane hgap="12" vgap="12">
-                        <Button onAction="#openFinalMarks" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📝  Upload Marks" />
+                        <Button onAction="#openFinalMarks" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📝  Upload Final Marks" />
 
                         <Button onAction="#openCA" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📊  CA Management" />
 
-                        <Button onAction="#openAttendance" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📋  View Attendance" />
+                        <Button onAction="#openCaEligibility" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📋  CA Eligibility" />
 
                         <Button onAction="#openAddSession" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="🗓  Add Session" />
 
                         <Button onAction="#openEligibility" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="✅  Check Eligibility" />
 
                         <Button onAction="#openGrades" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📊  Grades &amp; GPA" />
-
-                        <Button onAction="#openCourses" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📖  Course Materials" />
-
-                        <Button onAction="#openUploadFinalMarks" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📝  Upload Final Marks" />
-
-                        <Button onAction="#openUpdateFinalMarks" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="✏️  Update Final Marks" />
-
-                        <Button onAction="#openBatchFinalMarks" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📦  Batch Final Marks" />
-
-                        <Button onAction="#openGenerateGrades" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📊  Generate Grades" />
-
-                        <Button onAction="#openBatchGrades" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📑  Batch Grades" />
-
-                        <Button onAction="#openBatchEligibility" prefHeight="42" prefWidth="180" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="✅  Batch Eligibility" />
                     </FlowPane>
                 </VBox>
 

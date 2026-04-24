@@ -10,6 +10,7 @@ module com.example.frontend {
     requires net.synedra.validatorfx;
     requires com.fasterxml.jackson.databind;
     requires java.desktop;
+    requires org.apache.pdfbox;
 
 
     opens com.example.frontend to javafx.fxml;

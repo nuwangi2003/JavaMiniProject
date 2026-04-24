@@ -143,7 +143,7 @@ public class LecturerDashboardController implements Initializable {
 
     @FXML
     private void openMarks() {
-        loadView("MarksUpload.fxml");
+        loadView("lecturer/StudentCourseMarks.fxml");
     }
 
     @FXML
@@ -158,12 +158,12 @@ public class LecturerDashboardController implements Initializable {
 
     @FXML
     private void openEligibility() {
-        loadView("Eligibility.fxml");
+        loadView("lecturer/FinalEligibility.fxml");
     }
 
     @FXML
     private void openAttendance() {
-        loadView("AttendanceView.fxml");
+        loadView("lecturer/StudentEligibility.fxml");
     }
 
     @FXML
@@ -173,7 +173,7 @@ public class LecturerDashboardController implements Initializable {
 
     @FXML
     private void openGrades() {
-        loadView("GradesGPA.fxml");
+        loadView("lecturer/GradesGPA.fxml");
     }
 
     @FXML
@@ -199,6 +199,11 @@ public class LecturerDashboardController implements Initializable {
     @FXML
     private void openBatchFinalMarks() {
         loadView("BatchFinalMarks.fxml");
+    }
+
+    @FXML
+    private void openCaEligibility(){
+        loadView("lecturer/CAEligibility.fxml");
     }
 
     @FXML
