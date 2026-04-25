@@ -219,7 +219,8 @@ public class CommandRegistry {
             commands.put("ApproveMedical", new ApproveMedicalCommand(medicalService));
             commands.put("RejectMedical", new RejectMedicalCommand(medicalService));
             commands.put("GetStudentMedicalRecords", new GetStudentMedicalRecordsCommand(medicalService));
-            commands.put("GetBatchMedicalRecords", new GetBatchMedicalRecordsCommand(medicalService));
+            commands.put("GetMyMedicalRecords", new GetStudentMedicalRecordsCommand(medicalService));
+
 
 
 

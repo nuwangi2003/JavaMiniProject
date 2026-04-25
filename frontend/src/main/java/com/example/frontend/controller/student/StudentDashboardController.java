@@ -16,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -304,13 +305,14 @@ public class StudentDashboardController implements Initializable {
 
     @FXML private void openCourses() { loadView("StudentCourses.fxml"); }
     @FXML private void openAttendance() { loadView("StudentAttendance.fxml"); }
-    @FXML private void openMedical() { loadView("StudentMedical.fxml"); }
     @FXML private void openGrades() { loadView("StudentGrades.fxml"); }
     @FXML private void openTimetable() { loadView("admin/DisplayTimeTable.fxml"); }
     @FXML private void openNotices() { loadView("admin/NoticeDisplay.fxml"); }
     @FXML private void openEligibility() { loadView("StudentEligibility.fxml"); }
     @FXML private void openStudentFinalMarks() { loadView("ViewStudentFinalMarks.fxml"); }
     @FXML private void openStudentGrades() { loadView("StudentGrades.fxml"); }
+    @FXML private void openAddMedical() { loadView("student/StudentAddMedical.fxml"); }
+    @FXML private void openViewMedical() { loadView("student/StudentViewMedical.fxml"); }
 
     @FXML
     private void openProfile() {

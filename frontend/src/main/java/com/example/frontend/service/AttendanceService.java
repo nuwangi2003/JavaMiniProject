@@ -177,6 +177,10 @@ public class AttendanceService {
         return result;
     }
 
+    public List<AttendanceCourseOption> getMyMedicalEligibleCourseIds() {
+        return getMedicalEligibleCourseIds(SessionManager.getUserId());
+    }
+
     public List<AttendanceStudentOption> getStudentOptions() {
         List<AttendanceStudentOption> result = new ArrayList<>();
         try {

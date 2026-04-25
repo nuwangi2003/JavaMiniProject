@@ -19,13 +19,20 @@ public class AddMedicalCommand implements Command {
     @Override
     public void execute(Object data, ClientContext context) {
         try {
-            if (!isTechOfficeOrHigher(context.getRole())) {
+            if (!isAllowedRole(context.getRole())) {
                 context.getOutput().println("{\"success\":false,\"message\":\"Forbidden: insufficient role\"}");
                 return;
             }
             AddMedicalRequestDTO request = mapper.convertValue(data, AddMedicalRequestDTO.class);
+            String studentId = resolveStudentId(request, context);
+
+            if (studentId == null || studentId.isBlank()) {
+                context.getOutput().println("{\"success\":false,\"message\":\"Student ID is required\"}");
+                return;
+            }
+
             Medical medical = medicalService.addMedical(
-                    request.getStudentId(),
+                    studentId,
                     request.getCourseId(),
                     request.getExamType(),
                     request.getDateSubmitted(),
@@ -41,9 +48,20 @@ public class AddMedicalCommand implements Command {
         }
     }
 
-    private boolean isTechOfficeOrHigher(String role) {
-        return "Tech_Officer".equalsIgnoreCase(role)
+    private boolean isAllowedRole(String role) {
+        return "Student".equalsIgnoreCase(role)
+                || "Tech_Officer".equalsIgnoreCase(role)
                 || "Admin".equalsIgnoreCase(role)
                 || "Dean".equalsIgnoreCase(role);
+    }
+
+    private String resolveStudentId(AddMedicalRequestDTO request, ClientContext context) {
+        if ("Student".equalsIgnoreCase(context.getRole())) {
+            return context.getUserId();
+        }
+        if (request == null) {
+            return null;
+        }
+        return request.getStudentId();
     }
 }
