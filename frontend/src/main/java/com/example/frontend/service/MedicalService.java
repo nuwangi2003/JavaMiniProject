@@ -84,6 +84,20 @@ public class MedicalService {
         }
     }
 
+    public Medical addMedicalForCurrentStudent(String courseId, String examType, String dateSubmitted, String medicalCopy) {
+        return addMedical(SessionManager.getUserId(), courseId, examType, dateSubmitted, medicalCopy);
+    }
+
+    public List<Medical> getMyMedicalRecords() {
+        try {
+            JsonNode node = send("GetMyMedicalRecords", new HashMap<>());
+            return readMedicalList(node, "Failed to load your medical records");
+        } catch (Exception e) {
+            lastMessage = "Failed to load your medical records: " + (e.getMessage() == null ? "error" : e.getMessage());
+            return List.of();
+        }
+    }
+
     public List<Medical> getBatchMedicalRecords(String batch) {
         try {
             Map<String, Object> data = new HashMap<>();

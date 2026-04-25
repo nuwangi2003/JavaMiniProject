@@ -25,11 +25,13 @@ public class GetMedicalEligibleCoursesCommand implements Command {
                 return;
             }
             GetMedicalEligibleCoursesRequestDTO request = mapper.convertValue(data, GetMedicalEligibleCoursesRequestDTO.class);
-            if (request.getStudentId() == null || request.getStudentId().isBlank()) {
+            String studentId = resolveStudentId(request, context);
+
+            if (studentId == null || studentId.isBlank()) {
                 context.getOutput().println("{\"success\":false,\"message\":\"student_id is required\"}");
                 return;
             }
-            List<?> courses = attendanceService.getMedicalEligibleCourseIds(request.getStudentId());
+            List<?> courses = attendanceService.getMedicalEligibleCourseIds(studentId);
             AttendanceResponseDTO response = new AttendanceResponseDTO(true, "Courses loaded", courses);
             context.getOutput().println(mapper.writeValueAsString(response));
         } catch (Exception e) {
@@ -39,8 +41,19 @@ public class GetMedicalEligibleCoursesCommand implements Command {
     }
 
     private boolean isAllowedRole(String role) {
-        return "Tech_Officer".equalsIgnoreCase(role)
+        return "Student".equalsIgnoreCase(role)
+                || "Tech_Officer".equalsIgnoreCase(role)
                 || "Admin".equalsIgnoreCase(role)
                 || "Dean".equalsIgnoreCase(role);
+    }
+
+    private String resolveStudentId(GetMedicalEligibleCoursesRequestDTO request, ClientContext context) {
+        if ("Student".equalsIgnoreCase(context.getRole())) {
+            return context.getUserId();
+        }
+        if (request == null) {
+            return null;
+        }
+        return request.getStudentId();
     }
 }

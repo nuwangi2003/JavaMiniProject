@@ -26,7 +26,14 @@ public class GetStudentMedicalRecordsCommand implements Command {
                 return;
             }
             GetStudentMedicalRecordsRequestDTO request = mapper.convertValue(data, GetStudentMedicalRecordsRequestDTO.class);
-            List<Medical> records = medicalService.getStudentMedicalRecords(request.getStudentId());
+            String studentId = resolveStudentId(request, context);
+
+            if (studentId == null || studentId.isBlank()) {
+                context.getOutput().println("{\"success\":false,\"message\":\"Student ID is required\"}");
+                return;
+            }
+
+            List<Medical> records = medicalService.getStudentMedicalRecords(studentId);
             MedicalResponseDTO response = new MedicalResponseDTO(true, "Student medical records fetched", records);
             context.getOutput().println(mapper.writeValueAsString(response));
         } catch (Exception e) {
@@ -40,5 +47,15 @@ public class GetStudentMedicalRecordsCommand implements Command {
                 || "Tech_Officer".equalsIgnoreCase(role)
                 || "Admin".equalsIgnoreCase(role)
                 || "Dean".equalsIgnoreCase(role);
+    }
+
+    private String resolveStudentId(GetStudentMedicalRecordsRequestDTO request, ClientContext context) {
+        if ("Student".equalsIgnoreCase(context.getRole())) {
+            return context.getUserId();
+        }
+        if (request == null) {
+            return null;
+        }
+        return request.getStudentId();
     }
 }
