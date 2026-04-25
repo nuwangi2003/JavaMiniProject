@@ -77,10 +77,8 @@
                                -fx-padding: 8 18 8 18;
                                -fx-cursor: hand;"/>
 
-                <MenuButton text="Medicals" textFill="WHITE"
+                <MenuButton fx:id="medicalsMenuButton" id="medicalsMenuButton" text="Medicals"
                             style="-fx-background-color: transparent;
-                                   -fx-text-fill: white;
-                                   -fx-mark-color: white;
                                    -fx-font-size: 13px;
                                    -fx-background-radius: 10;
                                    -fx-padding: 8 18 8 18;

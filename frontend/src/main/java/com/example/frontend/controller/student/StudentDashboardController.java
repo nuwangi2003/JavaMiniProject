@@ -8,6 +8,7 @@ import com.example.frontend.service.AuthService;
 import com.example.frontend.service.NoticeService;
 import com.example.frontend.service.StudentService;
 import com.example.frontend.session.SessionManager;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,6 +51,7 @@ public class StudentDashboardController implements Initializable {
     @FXML private VBox coursesContainer;
     @FXML private VBox noticesContainer;
     @FXML private HBox eligibilityAlertBox;
+    @FXML private MenuButton medicalsMenuButton;
 
     @FXML private ImageView profileImage;
     @FXML private Label profileInitial;
@@ -73,6 +76,7 @@ public class StudentDashboardController implements Initializable {
         StudentService studentService = new StudentService(client);
         Student student = studentService.getStudentByIdAll(LoginController.userId);
         setupProfile(student);
+        styleMedicalsMenuButton();
 
         loadStats();
         loadCourses();
@@ -117,6 +121,24 @@ public class StudentDashboardController implements Initializable {
 
         profileImage.setVisible(false);
         profileInitial.setVisible(true);
+    }
+
+    private void styleMedicalsMenuButton() {
+        Platform.runLater(() -> {
+            if (medicalsMenuButton == null) {
+                return;
+            }
+
+            var labelNode = medicalsMenuButton.lookup(".label");
+            if (labelNode != null) {
+                labelNode.setStyle("-fx-text-fill: white;");
+            }
+
+            var arrowNode = medicalsMenuButton.lookup(".arrow");
+            if (arrowNode != null) {
+                arrowNode.setStyle("-fx-background-color: white;");
+            }
+        });
     }
 
     private void loadStats() {
