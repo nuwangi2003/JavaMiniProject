@@ -258,20 +258,34 @@
                             <Label text="Medical Certificate / Note"
                                    style="-fx-text-fill: #1a3a52; -fx-font-size: 12px;
                                           -fx-font-weight: bold; -fx-font-family: 'Segoe UI';"/>
-                            <TextField fx:id="medicalCopyField"
-                                       promptText="File path or short description of document"
-                                       prefHeight="44"
-                                       style="-fx-background-color: #ffffff;
-                                              -fx-text-fill: #1a3a52;
-                                              -fx-prompt-text-fill: #a8b8ca;
-                                              -fx-background-radius: 10;
-                                              -fx-border-color: #d4e4f7;
-                                              -fx-border-radius: 10;
-                                              -fx-border-width: 1.4;
-                                              -fx-font-size: 13px;
-                                              -fx-font-family: 'Segoe UI';
-                                              -fx-padding: 0 14;"/>
-                            <Label text="Attach a scanned copy reference or enter a note"
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <TextField fx:id="medicalCopyField"
+                                           HBox.hgrow="ALWAYS"
+                                           promptText="Choose PDF/image file path or enter short note"
+                                           prefHeight="44"
+                                           style="-fx-background-color: #ffffff;
+                                                  -fx-text-fill: #1a3a52;
+                                                  -fx-prompt-text-fill: #a8b8ca;
+                                                  -fx-background-radius: 10;
+                                                  -fx-border-color: #d4e4f7;
+                                                  -fx-border-radius: 10;
+                                                  -fx-border-width: 1.4;
+                                                  -fx-font-size: 13px;
+                                                  -fx-font-family: 'Segoe UI';
+                                                  -fx-padding: 0 14;"/>
+                                <Button text="Browse File" onAction="#chooseMedicalFile"
+                                        prefHeight="44" prefWidth="120"
+                                        style="-fx-background-color: #eef6ff;
+                                               -fx-text-fill: #4c8fce;
+                                               -fx-font-size: 12px; -fx-font-family: 'Segoe UI';
+                                               -fx-font-weight: bold;
+                                               -fx-background-radius: 10;
+                                               -fx-border-color: #d4e4f7;
+                                               -fx-border-radius: 10;
+                                               -fx-border-width: 1.2;
+                                               -fx-cursor: hand;"/>
+                            </HBox>
+                            <Label text="Choose a PDF/image file to save its path, or enter a short note"
                                    style="-fx-text-fill: #8fa3b8; -fx-font-size: 10px; -fx-font-family: 'Segoe UI';"/>
                         </VBox>
 

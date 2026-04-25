@@ -87,65 +87,77 @@
                 </HBox>
             </VBox>
 
-            <!-- Records Card -->
-            <VBox spacing="14"
-                  style="-fx-background-color: #ffffff; -fx-background-radius: 14;
-                         -fx-border-color: #d4e4f7; -fx-border-radius: 14; -fx-border-width: 1;">
-                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <!-- Records + Actions -->
+            <HBox spacing="20">
+                <VBox spacing="14" HBox.hgrow="ALWAYS"
+                      style="-fx-background-color: #ffffff; -fx-background-radius: 14;
+                             -fx-border-color: #d4e4f7; -fx-border-radius: 14; -fx-border-width: 1;">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
-                <Label text="Medical Records"
-                       style="-fx-text-fill: #1a3a52; -fx-font-size: 15px; -fx-font-weight: bold;"/>
+                    <Label text="Medical Records"
+                           style="-fx-text-fill: #1a3a52; -fx-font-size: 15px; -fx-font-weight: bold;"/>
 
-                <TextArea fx:id="recordsTextArea" prefHeight="380" wrapText="true"
-                          style="-fx-control-inner-background: #f5f9ff;
-                                 -fx-background-color: #f5f9ff;
-                                 -fx-border-color: #d4e4f7;
-                                 -fx-border-radius: 8;
-                                 -fx-background-radius: 8;
-                                 -fx-text-fill: #1a3a52;"/>
-            </VBox>
+                    <TableView fx:id="recordsTable" prefHeight="430"
+                               style="-fx-background-color: #f5f9ff;
+                                      -fx-border-color: #d4e4f7;
+                                      -fx-border-radius: 8;
+                                      -fx-background-radius: 8;">
+                        <columns>
+                            <TableColumn fx:id="idColumn" text="ID" prefWidth="60"/>
+                            <TableColumn fx:id="studentColumn" text="Student" prefWidth="120"/>
+                            <TableColumn fx:id="courseColumn" text="Course" prefWidth="100"/>
+                            <TableColumn fx:id="examTypeColumn" text="Exam" prefWidth="90"/>
+                            <TableColumn fx:id="dateColumn" text="Date" prefWidth="110"/>
+                            <TableColumn fx:id="copyColumn" text="Certificate / Note" prefWidth="220"/>
+                            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+                </VBox>
 
-            <!-- Action Card -->
-            <VBox spacing="16"
-                  style="-fx-background-color: #ffffff; -fx-background-radius: 14;
-                         -fx-border-color: #d4e4f7; -fx-border-radius: 14; -fx-border-width: 1;">
-                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                <VBox spacing="16" prefWidth="240"
+                      style="-fx-background-color: #ffffff; -fx-background-radius: 14;
+                             -fx-border-color: #d4e4f7; -fx-border-radius: 14; -fx-border-width: 1;">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
-                <Label text="Approval Actions"
-                       style="-fx-text-fill: #1a3a52; -fx-font-size: 15px; -fx-font-weight: bold;"/>
+                    <Label text="Approval Actions"
+                           style="-fx-text-fill: #1a3a52; -fx-font-size: 15px; -fx-font-weight: bold;"/>
 
-                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Select a row from the table or enter a medical ID manually."
+                           wrapText="true"
+                           style="-fx-text-fill: #8fa3b8; -fx-font-size: 11px;"/>
+
                     <VBox spacing="6">
                         <Label text="Medical ID"
                                style="-fx-text-fill: #8fa3b8; -fx-font-size: 11px; -fx-font-weight: bold;"/>
-                        <TextField fx:id="medicalIdField" prefWidth="140" promptText="id"
+                        <TextField fx:id="medicalIdField" prefWidth="180" promptText="id"
                                    style="-fx-background-color: #ffffff; -fx-text-fill: #1a3a52;
                                           -fx-prompt-text-fill: #a8b8ca;
                                           -fx-border-color: #d4e4f7; -fx-border-radius: 8;
                                           -fx-background-radius: 8; -fx-border-width: 1;"/>
                     </VBox>
 
-                    <Region HBox.hgrow="ALWAYS"/>
-
-                    <Button text="Approve" onAction="#approveSelected"
+                    <Button text="Approve" onAction="#approveSelected" maxWidth="Infinity"
                             style="-fx-background-color: #4cba52; -fx-text-fill: white;
                                    -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;"/>
 
-                    <Button text="Reject" onAction="#rejectSelected"
+                    <Button text="Reject" onAction="#rejectSelected" maxWidth="Infinity"
                             style="-fx-background-color: #e85d5d; -fx-text-fill: white;
                                    -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;"/>
-                </HBox>
 
-                <HBox alignment="CENTER_LEFT"
-                      style="-fx-background-color: #f5f9ff;
-                             -fx-background-radius: 8;
-                             -fx-border-color: #e8eef5;
-                             -fx-border-radius: 8;
-                             -fx-padding: 10 12 10 12;">
-                    <Label fx:id="statusLabel" text=""
-                           style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
-                </HBox>
-            </VBox>
+                    <Region VBox.vgrow="ALWAYS"/>
+
+                    <HBox alignment="CENTER_LEFT"
+                          style="-fx-background-color: #f5f9ff;
+                                 -fx-background-radius: 8;
+                                 -fx-border-color: #e8eef5;
+                                 -fx-border-radius: 8;
+                                 -fx-padding: 10 12 10 12;">
+                        <Label fx:id="statusLabel" text=""
+                               wrapText="true"
+                               style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
+                    </HBox>
+                </VBox>
+            </HBox>
         </VBox>
     </center>
 </BorderPane>
