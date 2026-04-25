@@ -13,8 +13,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -22,6 +24,7 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class AddMedicalController {
+    private static final int MAX_MEDICAL_COPY_LENGTH = 255;
 
     @FXML private ComboBox<String> studentRegCombo;
     @FXML private ComboBox<String> courseIdCombo;
@@ -231,6 +234,33 @@ public class AddMedicalController {
     }
 
     @FXML
+    private void chooseMedicalFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Medical Certificate");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("PDF and Images", "*.pdf", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.webp"),
+                new FileChooser.ExtensionFilter("PDF Files", "*.pdf"),
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.webp"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+
+        Stage stage = (Stage) medicalCopyField.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile == null) {
+            return;
+        }
+
+        String selectedPath = selectedFile.getAbsolutePath();
+        if (selectedPath.length() > MAX_MEDICAL_COPY_LENGTH) {
+            showStatus("Path is too long for database storage. Please choose a shorter file path.", StatusType.ERROR);
+            return;
+        }
+
+        medicalCopyField.setText(selectedPath);
+        showStatus("File selected. The file path will be saved with this medical record.", StatusType.SUCCESS);
+    }
+
+    @FXML
     private void submitMedical() {
         String regNo = studentRegCombo.getEditor().getText();
         String studentUserId = findUserIdByRegNo(regNo);
@@ -241,7 +271,7 @@ public class AddMedicalController {
         String date = submittedDatePicker.getValue() == null
                 ? null
                 : submittedDatePicker.getValue().toString();
-        String copy = medicalCopyField.getText();
+        String copy = medicalCopyField.getText() == null ? "" : medicalCopyField.getText().trim();
 
         if (studentUserId == null || studentUserId.isBlank()) {
             showStatus("✖ Select valid student registration number.", StatusType.ERROR);
@@ -260,6 +290,11 @@ public class AddMedicalController {
 
         if (date == null || date.isBlank()) {
             showStatus("✖ Date is required.", StatusType.ERROR);
+            return;
+        }
+
+        if (copy.length() > MAX_MEDICAL_COPY_LENGTH) {
+            showStatus("Medical certificate path or note must be 255 characters or less.", StatusType.ERROR);
             return;
         }
 
