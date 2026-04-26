@@ -87,6 +87,10 @@ public class AttendanceService {
         return attendanceDAO.getBatchAttendance(batch.trim(), normalizeViewType(viewType));
     }
 
+    public List<Map<String, Object>> getAllAttendance(String viewType) {
+        return attendanceDAO.getAllAttendance(normalizeViewType(viewType));
+    }
+
     public Map<String, Object> getStudentAttendanceSummary(String studentId, String viewType) {
         if (studentId == null || studentId.isBlank()) {
             return null;

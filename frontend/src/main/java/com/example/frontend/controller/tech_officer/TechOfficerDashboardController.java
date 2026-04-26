@@ -257,6 +257,7 @@ public class TechOfficerDashboardController implements Initializable {
     }
 
     @FXML private void openAttendance() { loadView("techofficer/ViewAttendance.fxml"); }
+    @FXML private void openAllAttendance() { loadView("techofficer/AllAttendance.fxml"); }
 
     @FXML
     private void openAdvancedAttendanceView() {

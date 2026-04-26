@@ -10,11 +10,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -52,6 +55,22 @@ public class StudentViewMedicalController {
         submittedDateColumn.setCellValueFactory(new PropertyValueFactory<>("dateSubmitted"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         copyColumn.setCellValueFactory(new PropertyValueFactory<>("medicalCopy"));
+        copyColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.isBlank()) {
+                    setText(null);
+                    setStyle("");
+                    setOnMouseClicked(null);
+                    return;
+                }
+
+                setText(item);
+                setStyle("-fx-text-fill: #3f7fc2; -fx-underline: true; -fx-cursor: hand;");
+                setOnMouseClicked(event -> openMedicalFile(item));
+            }
+        });
 
         medicalTable.setPlaceholder(new Label("No medical records uploaded yet."));
 
@@ -90,6 +109,38 @@ public class StudentViewMedicalController {
     @FXML
     private void backToDashboard() {
         loadView("/view/student/studentDashboard.fxml");
+    }
+
+    private void openMedicalFile(String path) {
+        if (path == null || path.isBlank()) {
+            showFileError("Medical file path is empty.");
+            return;
+        }
+
+        File file = new File(path);
+        if (!file.exists()) {
+            showFileError("Medical file not found:\n" + path);
+            return;
+        }
+
+        if (!Desktop.isDesktopSupported()) {
+            showFileError("Opening files is not supported on this device.");
+            return;
+        }
+
+        try {
+            Desktop.getDesktop().open(file);
+        } catch (Exception e) {
+            showFileError("Could not open file:\n" + path);
+        }
+    }
+
+    private void showFileError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("File Open Error");
+        alert.setHeaderText("Unable to open medical file");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void loadView(String path) {

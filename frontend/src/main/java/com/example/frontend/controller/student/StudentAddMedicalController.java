@@ -14,9 +14,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 public class StudentAddMedicalController {
+    private static final int MAX_MEDICAL_COPY_LENGTH = 255;
 
     @FXML private Label studentNameLabel;
     @FXML private Label headerRegNoLabel;
@@ -32,7 +35,7 @@ public class StudentAddMedicalController {
     @FXML private ComboBox<String> courseCombo;
     @FXML private ComboBox<String> examTypeCombo;
     @FXML private DatePicker submittedDatePicker;
-    @FXML private TextArea medicalCopyArea;
+    @FXML private TextField medicalFileField;
     @FXML private Label statusLabel;
 
     private final MedicalService medicalService = new MedicalService(LoginController.client);
@@ -67,7 +70,7 @@ public class StudentAddMedicalController {
         String courseId = selectedCourse == null ? null : courseDisplayToId.get(selectedCourse);
         String examType = examTypeCombo.getValue();
         LocalDate submittedDate = submittedDatePicker.getValue();
-        String medicalCopy = medicalCopyArea.getText() == null ? "" : medicalCopyArea.getText().trim();
+        String medicalCopy = medicalFileField.getText() == null ? "" : medicalFileField.getText().trim();
 
         if (courseId == null || courseId.isBlank()) {
             showStatus("Select a course before submitting.", StatusType.ERROR);
@@ -76,6 +79,22 @@ public class StudentAddMedicalController {
 
         if (submittedDate == null) {
             showStatus("Select the submitted date.", StatusType.ERROR);
+            return;
+        }
+
+        if (medicalCopy.isBlank()) {
+            showStatus("Choose your medical file before submitting.", StatusType.ERROR);
+            return;
+        }
+
+        File selectedFile = new File(medicalCopy);
+        if (!selectedFile.exists() || !selectedFile.isFile()) {
+            showStatus("Selected medical file was not found on this computer.", StatusType.ERROR);
+            return;
+        }
+
+        if (medicalCopy.length() > MAX_MEDICAL_COPY_LENGTH) {
+            showStatus("File path is too long for database storage. Please choose a shorter location.", StatusType.ERROR);
             return;
         }
 
@@ -92,9 +111,36 @@ public class StudentAddMedicalController {
         }
 
         showStatus("Medical record #" + added.getMedicalId() + " submitted successfully.", StatusType.SUCCESS);
-        medicalCopyArea.clear();
+        medicalFileField.clear();
         examTypeCombo.getSelectionModel().select("Attendance");
         submittedDatePicker.setValue(LocalDate.now());
+    }
+
+    @FXML
+    private void chooseMedicalFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Medical File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("PDF and Images", "*.pdf", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.webp"),
+                new FileChooser.ExtensionFilter("PDF Files", "*.pdf"),
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.webp"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+
+        Stage stage = (Stage) statusLabel.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile == null) {
+            return;
+        }
+
+        String selectedPath = selectedFile.getAbsolutePath();
+        if (selectedPath.length() > MAX_MEDICAL_COPY_LENGTH) {
+            showStatus("File path is too long for database storage. Please choose a shorter location.", StatusType.ERROR);
+            return;
+        }
+
+        medicalFileField.setText(selectedPath);
+        showStatus("Medical file selected. The local file path will be saved with this record.", StatusType.SUCCESS);
     }
 
     @FXML
@@ -106,7 +152,7 @@ public class StudentAddMedicalController {
         }
         examTypeCombo.getSelectionModel().select("Attendance");
         submittedDatePicker.setValue(LocalDate.now());
-        medicalCopyArea.clear();
+        medicalFileField.clear();
         showStatus("", StatusType.INFO);
     }
 

@@ -259,6 +259,45 @@ public class AttendanceDAO {
         return rows;
     }
 
+    public List<Map<String, Object>> getAllAttendance(String viewType) {
+        String sql = "SELECT a.attendance_id, a.student_id, s.reg_no, u.username, s.batch, s.department_id, " +
+                "d.name AS department_name, a.session_id, se.course_id, se.session_date, se.type, a.status, a.hours_attended " +
+                "FROM attendance a " +
+                "INNER JOIN students s ON a.student_id = s.user_id " +
+                "INNER JOIN users u ON s.user_id = u.user_id " +
+                "LEFT JOIN department d ON s.department_id = d.department_id " +
+                "INNER JOIN session se ON a.session_id = se.session_id " +
+                "WHERE (? = 'Combined' OR se.type = ?) " +
+                "ORDER BY se.session_date DESC, s.reg_no ASC, a.attendance_id DESC";
+        List<Map<String, Object>> rows = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, viewType);
+            stmt.setString(2, viewType);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Map<String, Object> row = new HashMap<>();
+                    row.put("attendanceId", rs.getInt("attendance_id"));
+                    row.put("studentId", rs.getString("student_id"));
+                    row.put("regNo", rs.getString("reg_no"));
+                    row.put("studentName", rs.getString("username"));
+                    row.put("batch", rs.getString("batch"));
+                    row.put("departmentId", rs.getString("department_id"));
+                    row.put("departmentName", rs.getString("department_name"));
+                    row.put("sessionId", rs.getInt("session_id"));
+                    row.put("courseId", rs.getString("course_id"));
+                    row.put("sessionDate", rs.getString("session_date"));
+                    row.put("sessionType", rs.getString("type"));
+                    row.put("status", rs.getString("status"));
+                    row.put("hoursAttended", rs.getDouble("hours_attended"));
+                    rows.add(row);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rows;
+    }
+
     public Map<String, Object> getStudentAttendanceSummary(String studentId, String viewType) {
         String sql = "SELECT a.student_id, s.reg_no, u.username, " +
                 "COUNT(*) AS totalSessions, " +

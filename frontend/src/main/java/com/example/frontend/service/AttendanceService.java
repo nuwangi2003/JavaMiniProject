@@ -250,6 +250,17 @@ public class AttendanceService {
         }
     }
 
+    public JsonNode getAllAttendance(String viewType) {
+        try {
+            Map<String, Object> data = new HashMap<>();
+            data.put("view_type", viewType);
+            return send("GetAllAttendance", data);
+        } catch (Exception e) {
+            lastMessage = "Failed to load all attendance: " + (e.getMessage() == null ? "error" : e.getMessage());
+            return null;
+        }
+    }
+
     public JsonNode getStudentAttendanceSummary(String studentId, String viewType) {
         try {
             Map<String, Object> data = new HashMap<>();

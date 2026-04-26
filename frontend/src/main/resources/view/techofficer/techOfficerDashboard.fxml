@@ -16,8 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom right, #eef6ff, #fdfcff);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.controller.tech_officer.TechOfficerDashboardController">
-
+<BorderPane prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to bottom right, #eef6ff, #fdfcff);" xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.controller.tech_officer.TechOfficerDashboardController">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="0" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #3f7fc2);                      -fx-effect: dropshadow(three-pass-box, rgba(63,127,194,0.25), 14, 0, 0, 3);">
 
@@ -44,8 +43,6 @@
                 </padding>
    
                 <Button style="-fx-background-color: rgba(255,255,255,0.22);                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-background-radius: 10;                                -fx-padding: 8 18 8 18;                                -fx-cursor: hand;" text="Dashboard" />
-
-                <Button onAction="#openMedical" style="-fx-background-color: transparent;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-background-radius: 10;                                -fx-padding: 8 18 8 18;                                -fx-cursor: hand;" text="Medical Records" />
 
                 <Button onAction="#openTimetables" style="-fx-background-color: transparent;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-background-radius: 10;                                -fx-padding: 8 18 8 18;                                -fx-cursor: hand;" text="Timetables" />
 
@@ -156,7 +153,9 @@
 
                         <Button onAction="#openAttendance" prefHeight="42" prefWidth="190" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📋  View Attendance" />
 
-                        <Button onAction="#openAdvancedAttendanceView" prefHeight="42" prefWidth="220" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📊  Advanced Attendance View" />
+                        <Button onAction="#openAdvancedAttendanceView" prefHeight="42" prefWidth="220" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                       -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="📊  Advanced Attendance View" />
+
+                        <Button onAction="#openAllAttendance" prefHeight="42" prefWidth="220" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="All Attendance Table" />
 
                         <Button onAction="#openAddMedical" prefHeight="42" prefWidth="190" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #4c8fce);                                        -fx-text-fill: white;                                        -fx-font-size: 13px;                                        -fx-font-weight: bold;                                        -fx-background-radius: 10;                                        -fx-cursor: hand;" text="🏥  Add Medical" />
 

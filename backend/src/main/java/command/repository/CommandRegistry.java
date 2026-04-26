@@ -153,6 +153,7 @@ public class CommandRegistry {
             commands.put("GetAttendanceSessions", new GetAttendanceSessionsCommand(attendanceService));
             commands.put("GetStudentAttendance", new GetStudentAttendanceCommand(attendanceService));
             commands.put("GetBatchAttendance", new GetBatchAttendanceCommand(attendanceService));
+            commands.put("GetAllAttendance", new GetAllAttendanceCommand(attendanceService));
             commands.put("GetStudentAttendanceSummary", new GetStudentAttendanceSummaryCommand(attendanceService));
             commands.put("GetBatchAttendanceSummary", new GetBatchAttendanceSummaryCommand(attendanceService));
             commands.put("CheckAttendanceEligibility", new CheckAttendanceEligibilityCommand(attendanceService));

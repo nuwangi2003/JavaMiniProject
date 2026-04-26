@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="720.0" prefWidth="1180.0" style="-fx-background-color: linear-gradient(to bottom right, #eef6ff, #fdfcff);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.controller.student.StudentViewMedicalController">
-
+<BorderPane prefHeight="720.0" prefWidth="1180.0" style="-fx-background-color: linear-gradient(to bottom right, #eef6ff, #fdfcff);" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.frontend.controller.student.StudentViewMedicalController">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="0" style="-fx-background-color: linear-gradient(to right, #5b9fd9, #3f7fc2);                      -fx-effect: dropshadow(three-pass-box, rgba(63,127,194,0.25), 14, 0, 0, 3);">
 
@@ -21,8 +20,8 @@
                     <Insets left="24" right="24" />
                 </padding>
 
-                <StackPane prefHeight="44" prefWidth="44" style="-fx-background-color: rgba(255,255,255,0.18); -fx-background-radius: 22;">
-                    <Label prefHeight="38.0" prefWidth="41.0" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" text=" 🎓" />
+                <StackPane prefHeight="53.0" prefWidth="65.0" style="-fx-background-color: rgba(255,255,255,0.18); -fx-background-radius: 22;">
+                    <Label prefHeight="72.0" prefWidth="50.0" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" text="  🎓" />
                 </StackPane>
 
                 <VBox alignment="CENTER_LEFT" spacing="2">
@@ -53,10 +52,6 @@
                 <padding>
                     <Insets left="10" right="20" />
                 </padding>
-
-                <StackPane prefHeight="72.0" prefWidth="93.0" style="-fx-background-color: white; -fx-background-radius: 18;">
-                    <Label style="-fx-text-fill: #3f7fc2; -fx-font-weight: bold; -fx-font-size: 14px;" text="S" />
-                </StackPane>
 
                 <VBox alignment="CENTER_LEFT" spacing="1">
                     <Label fx:id="studentNameLabel" prefHeight="14.0" prefWidth="128.0" style="-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;" text="Student" />
