@@ -43,7 +43,7 @@
             <VBox spacing="4">
                 <Label text="View Attendance Record"
                        style="-fx-text-fill: #1a3a52; -fx-font-size: 26px; -fx-font-weight: bold;"/>
-                <Label text="Search and view attendance details by attendance ID."
+                <Label text="Search and view attendance details by student reg no."
                        style="-fx-text-fill: #8fa3b8; -fx-font-size: 13px;"/>
             </VBox>
 
@@ -65,7 +65,7 @@
                     <padding><Insets top="24" bottom="24" left="24" right="24"/></padding>
 
                     <HBox spacing="10">
-                        <TextField fx:id="attendanceIdField" promptText="Enter attendance ID (e.g. 5)"
+                        <TextField fx:id="attendanceIdField" promptText="Enter student reg no"
                                    HBox.hgrow="ALWAYS"
                                    style="-fx-background-color: #ffffff; -fx-text-fill: #1a3a52;
                                           -fx-prompt-text-fill: #a8b8ca;

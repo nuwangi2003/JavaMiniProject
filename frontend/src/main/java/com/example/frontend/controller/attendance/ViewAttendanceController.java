@@ -2,7 +2,9 @@ package com.example.frontend.controller.attendance;
 
 import com.example.frontend.controller.admin.LoginController;
 import com.example.frontend.model.Attendance;
+import com.example.frontend.model.AttendanceStudentOption;
 import com.example.frontend.service.AttendanceService;
+import com.fasterxml.jackson.databind.JsonNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +13,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ViewAttendanceController {
 
@@ -30,9 +36,11 @@ public class ViewAttendanceController {
     private Label resultLabel;
 
     private final AttendanceService attendanceService = new AttendanceService(LoginController.client);
+    private final Map<String, String> regNoToUserId = new HashMap<>();
 
     @FXML
     public void initialize() {
+        loadStudentRegNoMap();
         clearValues();
         showResult("", ResultType.INFO);
     }
@@ -40,14 +48,34 @@ public class ViewAttendanceController {
     @FXML
     private void findAttendance() {
         try {
-            Integer attendanceId = Integer.parseInt(attendanceIdField.getText().trim());
-            Attendance attendance = attendanceService.getAttendanceById(attendanceId);
+            String input = attendanceIdField.getText() == null ? "" : attendanceIdField.getText().trim();
+            if (input.isEmpty()) {
+                showError("Please enter a student reg no.");
+                return;
+            }
 
-            if (attendance == null) {
-                showResult("No record found.", ResultType.ERROR);
+            String studentUserId = resolveStudentUserId(input);
+            if (studentUserId == null) {
+                showError("Invalid student reg no. Use a valid registration number.");
+                return;
+            }
+
+            JsonNode response = attendanceService.getStudentAttendance(studentUserId, "Combined");
+            JsonNode dataNode = response == null ? null : response.path("data");
+
+            if (response == null || !response.path("success").asBoolean(false) || dataNode == null || !dataNode.isArray() || dataNode.size() == 0) {
+                showResult("No attendance record found for this student.", ResultType.ERROR);
                 clearValues();
                 return;
             }
+
+            JsonNode latestRecord = dataNode.get(0);
+            Attendance attendance = new Attendance();
+            attendance.setAttendanceId(latestRecord.path("attendanceId").asInt());
+            attendance.setStudentId(latestRecord.path("studentId").asText(""));
+            attendance.setSessionId(latestRecord.path("sessionId").asInt());
+            attendance.setStatus(latestRecord.path("status").asText(""));
+            attendance.setHoursAttended(latestRecord.path("hoursAttended").asDouble());
 
             attendanceIdValue.setText(String.valueOf(attendance.getAttendanceId()));
             studentIdValue.setText(attendance.getStudentId() == null ? "-" : attendance.getStudentId());
@@ -55,10 +83,8 @@ public class ViewAttendanceController {
             statusValue.setText(attendance.getStatus() == null ? "-" : attendance.getStatus());
             hoursValue.setText(String.valueOf(attendance.getHoursAttended()));
 
-            showResult("Attendance loaded successfully.", ResultType.SUCCESS);
+            showResult("Latest attendance loaded successfully for student reg no.", ResultType.SUCCESS);
 
-        } catch (NumberFormatException ex) {
-            showError("Attendance ID must be an integer.");
         } catch (Exception ex) {
             showError("Unexpected error: " + ex.getMessage());
         }
@@ -102,6 +128,27 @@ public class ViewAttendanceController {
         alert.setHeaderText("Operation failed");
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void loadStudentRegNoMap() {
+        regNoToUserId.clear();
+        List<AttendanceStudentOption> options = attendanceService.getStudentOptions();
+        for (AttendanceStudentOption option : options) {
+            if (option.getRegNo() != null && option.getUserId() != null) {
+                regNoToUserId.put(option.getRegNo().trim().toLowerCase(), option.getUserId().trim());
+            }
+        }
+    }
+
+    private String resolveStudentUserId(String input) {
+        if (input == null || input.isBlank()) {
+            return null;
+        }
+        String trimmed = input.trim();
+        if (trimmed.toUpperCase().startsWith("U")) {
+            return trimmed;
+        }
+        return regNoToUserId.get(trimmed.toLowerCase());
     }
 
     private enum ResultType {
