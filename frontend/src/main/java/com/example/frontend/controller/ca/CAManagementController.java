@@ -7,6 +7,7 @@ import com.example.frontend.model.LecturerCourseItem;
 import com.example.frontend.service.CAMarkService;
 import com.example.frontend.service.LecturerCourseService;
 import com.fasterxml.jackson.databind.JsonNode;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,6 +18,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -32,20 +35,28 @@ public class CAManagementController {
     @FXML private TextField updateMarkIdField;
     @FXML private TextField updateMarksField;
     @FXML private Label statusLabel;
+    @FXML private TableView<CAMark> caMarksTable;
+    @FXML private TableColumn<CAMark, String> studentRegNoColumn;
+    @FXML private TableColumn<CAMark, String> assignmentNameColumn;
+    @FXML private TableColumn<CAMark, String> marksColumn;
+    @FXML private TableColumn<CAMark, String> markIdColumn;
 
     private final CAMarkService caService = new CAMarkService(LoginController.client);
     private final LecturerCourseService lecturerCourseService = new LecturerCourseService(LoginController.client);
     private final ObservableList<LecturerCourseItem> lecturerCourses = FXCollections.observableArrayList();
     private final ObservableList<CAAssessmentTypeOption> assessmentTypeOptions = FXCollections.observableArrayList();
+    private final ObservableList<CAMark> courseMarkEntries = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         showStatus("", StatusType.INFO);
         setupCourseBox(uploadCourseBox, "Select Course");
         setupAssessmentTypeBox();
+        setupMarksTable();
         uploadCourseBox.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue == null) {
                 assessmentTypeOptions.clear();
+                courseMarkEntries.clear();
                 uploadAssessmentTypeBox.getSelectionModel().clearSelection();
                 return;
             }
@@ -93,6 +104,31 @@ public class CAManagementController {
                 setText(empty || item == null ? "Assignment ID" : item.toString());
             }
         });
+    }
+
+    private void setupMarksTable() {
+        caMarksTable.setItems(courseMarkEntries);
+        caMarksTable.setPlaceholder(new Label("No CA details found for the selected course."));
+        caMarksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        studentRegNoColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(firstNonBlank(
+                        data.getValue().getStudentRegNo(),
+                        data.getValue().getStudentId(),
+                        "-"
+                ))
+        );
+        assignmentNameColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(firstNonBlank(data.getValue().getAssessmentName(), "-"))
+        );
+        marksColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(formatMarks(data.getValue().getMarks()))
+        );
+        markIdColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getMarkId() == null
+                        ? "-"
+                        : String.valueOf(data.getValue().getMarkId()))
+        );
     }
 
     private void loadLecturerCourses() {
@@ -190,6 +226,7 @@ public class CAManagementController {
         JsonNode node = caService.getCourseCAReference(courseId);
         if (node == null || !node.path("success").asBoolean(false)) {
             assessmentTypeOptions.clear();
+            courseMarkEntries.clear();
             uploadAssessmentTypeBox.getSelectionModel().clearSelection();
             if (showLoadStatus) {
                 showStatus(caService.getLastMessage(), StatusType.ERROR);
@@ -199,6 +236,7 @@ public class CAManagementController {
 
         JsonNode data = node.path("data");
         assessmentTypeOptions.setAll(readAssessmentTypes(data.path("assessmentTypes")));
+        courseMarkEntries.setAll(readMarkEntries(data.path("markEntries")));
 
         if (assessmentTypeOptions.isEmpty()) {
             uploadAssessmentTypeBox.getSelectionModel().clearSelection();
@@ -238,9 +276,55 @@ public class CAManagementController {
         return items;
     }
 
+    private List<CAMark> readMarkEntries(JsonNode arrayNode) {
+        ObservableList<CAMark> items = FXCollections.observableArrayList();
+        if (arrayNode == null || !arrayNode.isArray()) {
+            return items;
+        }
+
+        for (JsonNode row : arrayNode) {
+            CAMark mark = new CAMark();
+            if (row.hasNonNull("markId")) {
+                mark.setMarkId(row.path("markId").asInt());
+            }
+            mark.setStudentId(row.path("studentId").asText(""));
+            mark.setStudentRegNo(row.path("studentRegNo").asText(""));
+            if (row.hasNonNull("assessmentTypeId")) {
+                mark.setAssessmentTypeId(row.path("assessmentTypeId").asInt());
+            }
+            mark.setAssessmentName(row.path("assessmentName").asText(""));
+            if (row.has("marks") && !row.path("marks").isNull()) {
+                mark.setMarks(row.path("marks").asDouble());
+            }
+            items.add(mark);
+        }
+        return items;
+    }
+
     private void clearUploadFields() {
         uploadStudentIdField.clear();
         uploadMarksField.clear();
+    }
+
+    private String firstNonBlank(String... values) {
+        for (String value : values) {
+            if (value != null && !value.isBlank()) {
+                return value;
+            }
+        }
+        return "-";
+    }
+
+    private String formatMarks(Double marks) {
+        if (marks == null) {
+            return "-";
+        }
+
+        if (Math.floor(marks) == marks) {
+            return String.valueOf(marks.intValue());
+        }
+
+        return String.format("%.2f", marks);
     }
 
     private void showInfoMessage(String title, String header, String content) {
