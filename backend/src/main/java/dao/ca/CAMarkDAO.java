@@ -245,9 +245,10 @@ public class CAMarkDAO {
     }
 
     public List<Map<String, Object>> getCourseCAMarkEntries(String courseId) {
-        String sql = "SELECT sm.mark_id, sm.student_id, sm.assessment_type_id, at.name, sm.marks " +
+        String sql = "SELECT sm.mark_id, sm.student_id, s.reg_no, sm.assessment_type_id, at.name, sm.marks " +
                 "FROM student_marks sm " +
                 "INNER JOIN assessment_type at ON at.assessment_type_id = sm.assessment_type_id " +
+                "LEFT JOIN students s ON s.user_id = sm.student_id " +
                 "WHERE at.course_id = ? AND at.component = 'CA' " +
                 "ORDER BY sm.mark_id";
         List<Map<String, Object>> rows = new ArrayList<>();
@@ -258,6 +259,7 @@ public class CAMarkDAO {
                     Map<String, Object> row = new HashMap<>();
                     row.put("markId", rs.getInt("mark_id"));
                     row.put("studentId", rs.getString("student_id"));
+                    row.put("studentRegNo", rs.getString("reg_no"));
                     row.put("assessmentTypeId", rs.getInt("assessment_type_id"));
                     row.put("assessmentName", rs.getString("name"));
                     row.put("marks", rs.getDouble("marks"));

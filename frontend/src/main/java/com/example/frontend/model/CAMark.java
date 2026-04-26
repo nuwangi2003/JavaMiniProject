@@ -3,6 +3,7 @@ package com.example.frontend.model;
 public class CAMark {
     private Integer markId;
     private String studentId;
+    private String studentRegNo;
     private Integer assessmentTypeId;
     private String courseId;
     private String assessmentName;
@@ -23,6 +24,14 @@ public class CAMark {
 
     public void setStudentId(String studentId) {
         this.studentId = studentId;
+    }
+
+    public String getStudentRegNo() {
+        return studentRegNo;
+    }
+
+    public void setStudentRegNo(String studentRegNo) {
+        this.studentRegNo = studentRegNo;
     }
 
     public Integer getAssessmentTypeId() {
